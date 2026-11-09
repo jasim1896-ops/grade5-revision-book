@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Grade 5 Revision Book</title>
+<meta name="description" content="Interactive Grade 5 English and Science revision book. Practice and Exam modes, English and Arabic explanations, works offline.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#EDF2FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1526" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="G5 Revision">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&family=Fredoka:wght@500;600&family=Nunito:wght@500;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&family=Fredoka:wght@500;600&family=Nunito:wght@500;700;800&display=swap"></noscript>
+<style>
+/* Layout: one calm column for iPad. Chapter chips on top, big tap targets, feedback right under each question. */
+:root{
+  --bg:#EDF2FA; --card:#FFFFFF; --ink:#13203C; --mute:#566385; --line:#D3DCEC; --line2:#A9B7D2;
+  --accent:#3A56D4; --accent-ink:#FFFFFF; --sel:#E2E9FF;
+  --eng:#C9471F; --eng-bg:#FDEBE4; --sci:#0B7F80; --sci-bg:#DCF3F1;
+  --good:#16794A; --good-bg:#DDF4E7; --bad:#B83232; --bad-bg:#FBE3E3; --warn-bg:#FFF2D6;
+  --heat:#D8532B; --cool:#2F6FE0; --pt:#3A56D4; --ptln:#1F2F7A;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1526; --card:#17213A; --ink:#E7EDFB; --mute:#9BA9C9; --line:#2A3858; --line2:#4A5C86;
+  --accent:#8CA2FF; --accent-ink:#0E1526; --sel:#22305A;
+  --eng:#FF8A63; --eng-bg:#3A2018; --sci:#4FD1CB; --sci-bg:#10302F;
+  --good:#52D68C; --good-bg:#12301F; --bad:#FF8484; --bad-bg:#3A1A1A; --warn-bg:#3A2D12;
+  --heat:#FF8A63; --cool:#7FAAFF; --pt:#8CA2FF; --ptln:#C9D4FF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1526; --card:#17213A; --ink:#E7EDFB; --mute:#9BA9C9; --line:#2A3858; --line2:#4A5C86;
+  --accent:#8CA2FF; --accent-ink:#0E1526; --sel:#22305A;
+  --eng:#FF8A63; --eng-bg:#3A2018; --sci:#4FD1CB; --sci-bg:#10302F;
+  --good:#52D68C; --good-bg:#12301F; --bad:#FF8484; --bad-bg:#3A1A1A; --warn-bg:#3A2D12;
+  --heat:#FF8A63; --cool:#7FAAFF; --pt:#8CA2FF; --ptln:#C9D4FF; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 18px/1.55 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+button,input,textarea{font:inherit;color:inherit;touch-action:manipulation}
+h1,h2,h3{font-family:Fredoka,Nunito,system-ui,sans-serif;font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0 0 .6em}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:920px;margin:0 auto;padding-bottom:64px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:10px;align-items:center;padding:10px 0;background:var(--bg);border-bottom:1px solid var(--line)}
+.home{flex:0 0 auto;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--ink);color:var(--bg);text-decoration:none}
+.chips{display:flex;gap:8px;overflow-x:auto;flex:1;min-width:0;padding:3px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font:600 20px Fredoka,sans-serif;text-decoration:none;color:var(--ink);background:var(--card);border:2px solid var(--line)}
+.chip.eng{border-color:var(--eng)} .chip.sci{border-color:var(--sci)}
+.chip[aria-current="page"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* home */
+.hero{padding:26px 0 8px}
+.eyebrow{font:800 13px/1 Nunito;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.hero h1{font-size:clamp(34px,6vw,52px)}
+.lead{max-width:60ch;color:var(--mute);margin-top:10px}
+.overall{display:flex;align-items:center;gap:14px;margin:18px 0 22px;flex-wrap:wrap}
+.overall .bar{flex:1;min-width:180px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{display:flex;flex-direction:column;gap:8px;padding:16px;background:var(--card);border:2px solid var(--line);border-radius:16px;text-decoration:none;color:inherit;min-width:0}
+.card:active{background:var(--sel)}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.num{font:600 40px/1 Fredoka,sans-serif}
+.card h2{font-size:23px}
+.src{font-size:14px;color:var(--mute);margin:0;overflow-wrap:anywhere}
+.tag{font:800 12px/1 Nunito;letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:7px}
+.tag.eng{background:var(--eng-bg);color:var(--eng)} .tag.sci{background:var(--sci-bg);color:var(--sci)}
+.card.eng .num{color:var(--eng)} .card.sci .num{color:var(--sci)}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.stat{font-size:15px;color:var(--mute);margin:0}
+
+/* chapter */
+.ch-head{margin:22px 0 14px;display:flex;flex-direction:column;gap:8px}
+.ch-head h1{font-size:clamp(30px,5vw,42px)}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0 18px}
+.seg{display:inline-flex;border:2px solid var(--line2);border-radius:12px;overflow:hidden}
+.seg button{min-height:46px;padding:0 18px;border:0;background:var(--card);font-weight:800;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.mode-note{font-size:15px;color:var(--mute);margin:0;flex:1;min-width:200px}
+details.learn{margin:0 0 26px}
+details.learn>summary{cursor:pointer;font:600 24px Fredoka,sans-serif;min-height:48px;display:flex;align-items:center;margin-bottom:12px}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.lcard{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.lcard.wide{grid-column:1/-1}
+.lcard h3{font-size:21px;margin-bottom:8px}
+.ex{background:var(--sel);border-radius:10px;padding:8px 12px;margin:8px 0}
+.ex.bad{background:var(--bad-bg)}
+.arb{direction:rtl;text-align:right;font-family:Cairo,Nunito,sans-serif;font-size:19px;line-height:1.9;background:var(--warn-bg);border-radius:14px;padding:14px 18px;margin-top:14px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:480px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--sel)}
+ul.tight{margin:.2em 0 .6em;padding-left:1.2em} ul.tight li{margin:.2em 0}
+
+.sec{margin:34px 0}
+.sec-h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.sec-h h2{font-size:27px}
+.lvl{font:800 12px/1 Nunito;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:7px;color:#fff}
+.lvl.l1{background:#1E8E52} .lvl.l2{background:#C77A0A} .lvl.l3{background:#8A4BB0}
+.note{color:var(--mute);margin:6px 0 10px}
+.passage{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px 18px;margin:10px 0;max-width:70ch}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chiprow span{background:var(--sel);border:2px solid var(--line2);border-radius:10px;padding:4px 12px;font-weight:800}
+
+.q{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.q.is-good{border-color:var(--good)} .q.is-bad{border-color:var(--bad)}
+.qhead{display:flex;gap:12px;align-items:flex-start}
+.qno{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--bg);font:600 17px Fredoka,sans-serif;margin-top:2px}
+.qtxt{flex:1;min-width:0;font-size:20px}
+.src2{color:var(--mute);font-size:16px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:14px}
+.opt{min-height:54px;padding:10px 14px;border:2px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:800;font-size:18px;text-align:left;cursor:pointer}
+.opt:active{background:var(--sel)}
+.opt.sel{border-color:var(--accent);background:var(--sel)}
+.opt.good{border-color:var(--good);background:var(--good-bg)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.reveal{border-color:var(--good);border-style:dashed}
+.opt:disabled{color:var(--ink);cursor:default}
+.opts.pics{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.opts.pics .opt{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cap{font:600 18px Fredoka,sans-serif}
+.blank{display:inline-block;min-width:96px;border-bottom:3px solid var(--line2);text-align:center;font-weight:800;margin:0 4px}
+.blank.good{color:var(--good);border-color:var(--good)} .blank.bad{color:var(--bad);border-color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{min-height:50px;padding:0 20px;border-radius:12px;border:2px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:17px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:18px}
+.fb.good{background:var(--good-bg)} .fb.bad{background:var(--bad-bg)} .fb.hint{background:var(--warn-bg)}
+.fb small{display:block;margin-top:4px;color:var(--mute);font-size:15px}
+input.txt,textarea.txt{display:block;width:100%;margin-top:14px;padding:12px 14px;border-radius:12px;border:2px solid var(--line2);background:var(--card);font-weight:600;font-size:19px}
+textarea.txt{min-height:96px;resize:vertical}
+mark{background:var(--bad-bg);color:var(--bad);border-radius:5px;padding:0 4px;font-weight:800}
+.checks{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+
+/* results */
+.res{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px;margin:34px 0}
+.res h2{font-size:26px;margin-bottom:10px}
+.big{font:600 44px/1 Fredoka,sans-serif}
+
+/* pictures */
+.pic{width:100%;max-width:140px;height:auto;display:block}
+.beaker{fill:none;stroke:var(--line2);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.pt{fill:var(--pt);stroke:var(--ptln);stroke-width:1}
+.pics3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:480px}
+.fig{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.figcap{font:600 18px Fredoka,sans-serif}
+.cyc{width:100%;max-width:720px;height:auto;display:block;margin:8px 0}
+.bx{fill:var(--card);stroke:var(--line2);stroke-width:3}
+.lbl{font:600 24px Fredoka,sans-serif;fill:var(--ink)}
+.nm{font:800 19px Nunito,sans-serif;fill:var(--ink)}
+.sar{stroke-width:6;stroke-linecap:round}
+.sar.c{stroke:var(--cool)} .sar.h{stroke:var(--heat)} .sar.n{stroke:var(--mute)}
+.ah.c{fill:var(--cool)} .ah.h{fill:var(--heat)} .ah.n{fill:var(--mute)}
+.ltr{fill:var(--ink)} .ltrt{font:600 24px Fredoka,sans-serif;fill:var(--bg)}
+.legend{font-size:15px;color:var(--mute);margin:0}
+.legend b.h{color:var(--heat)} .legend b.c{color:var(--cool)}
+
+/* particle lab */
+.lab canvas{width:100%;height:auto;display:block;border-radius:14px;background:var(--card);border:2px solid var(--line)}
+.lab-row{display:flex;gap:10px;align-items:center;margin-top:10px}
+.lab-row label{font-weight:800}
+.lab-row input{flex:1;min-width:0;height:46px;accent-color:var(--accent)}
+.lab-end{font-size:15px;color:var(--mute)}
+.lab-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.lab-info{margin:12px 0 0;min-height:3.4em}
+.lab-chg{color:var(--accent);font-weight:800}
+
+@media (max-width:520px){body{font-size:17px}.qtxt{font-size:18px}.opts{grid-template-columns:1fr}.opts.pics{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* listen buttons, Arabic explanations (added) */
+.say{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 14px;border-radius:12px;border:2px solid var(--accent);background:transparent;color:var(--accent);font:800 16px/1 Nunito,system-ui,-apple-system,sans-serif;cursor:pointer;flex:0 0 auto}
+.say[data-lang="ar"]{font-family:Cairo,"Geeza Pro","Noto Naskh Arabic",system-ui,sans-serif;font-size:17px}
+.say.on{background:var(--accent);color:var(--accent-ink)}
+.say svg{flex:0 0 auto}
+.no-tts .say,.no-ar .say[data-lang="ar"]{display:none}
+.lh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.lh h3{margin:0}
+.fb-tools{margin-top:10px}
+.arb,.arx{font-family:Cairo,"Geeza Pro","Noto Naskh Arabic",system-ui,-apple-system,sans-serif}
+.arb-h,.arx-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.arb-h{margin-bottom:6px}
+.arb-t,.arx-t{font-weight:700;color:var(--mute);font-size:16px}
+.arx{margin-top:12px;background:var(--warn-bg);border-radius:12px;padding:10px 16px 14px;font-size:19px;line-height:1.9}
+.arx p{margin:6px 0 0}
+.arb p{margin:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="top" aria-label="Chapters"><a class="home" href="#home" aria-label="Home"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/></svg></a><div class="chips" id="chips"></div></nav>
+<main id="app"></main>
+</div>
+<script>
+/* ---------- picture helpers (pure functions) ---------- */
+function rng(seed){let a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function dots(kind,x0,y0,w,h,r,seed){
+  const R=rng(seed),out=[],d=2*r+1;
+  if(kind==='gas'){
+    const n=Math.max(6,Math.round(w*h/(d*d*9)));let tries=0;
+    while(out.length<n&&tries<3000){tries++;const x=x0+r+R()*(w-2*r),y=y0+r+R()*(h-2*r);
+      if(out.every(p=>Math.hypot(p[0]-x,p[1]-y)>d*2.3))out.push([x,y]);}
+  }else{
+    const rows=Math.floor((h/2)/d),cols=Math.floor(w/d),oy=y0+h-rows*d,ox=x0+(w-cols*d)/2;
+    for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){
+      let x=ox+d*(i+.5),y=oy+d*(j+.5);
+      if(kind==='liquid'){x+=(R()-.5)*r*.9+(j%2?r*.5:0);y+=(R()-.5)*r*.9;x=Math.min(x,x0+w-r);}
+      out.push([x,y]);
+    }
+  }
+  return out.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${r}" class="pt"/>`).join('');
+}
+function pic(kind){
+  return `<svg class="pic" viewBox="0 0 120 112" role="img" aria-label="${kind} particles"><path d="M10 6V98Q10 106 18 106H102Q110 106 110 98V6" class="beaker"/>${dots(kind,15,10,90,92,6,kind==='gas'?7:3)}</svg>`;
+}
+function fig(label,kind){return `<figure class="fig"><span class="figcap">${label}</span>${pic(kind)}</figure>`;}
+function picOpt(letter,kind){return `<span class="cap">${letter}</span>${pic(kind)}`;}
+function cycle(mode){
+  const bx=[0,285,570],bw=130,by=10,bh=150,L=mode==='letters';
+  const box=(i,kind,name)=>`<rect x="${bx[i]}" y="${by}" width="${bw}" height="${bh}" rx="10" class="bx"/>${dots(kind,bx[i]+6,by+6,bw-12,bh-12,7,kind==='gas'?11:5)}<text x="${bx[i]+bw/2}" y="192" class="lbl" text-anchor="middle">${name}</text>`;
+  const arrow=(x1,x2,y,cls)=>{const dir=x2>x1?1:-1;return `<line x1="${x1}" y1="${y}" x2="${x2-dir*12}" y2="${y}" class="sar ${cls}"/><polygon points="${x2},${y} ${x2-dir*16},${y-10} ${x2-dir*16},${y+10}" class="ah ${cls}"/>`;};
+  const tag=(cx,y,txt,letter)=>L?`<circle cx="${cx}" cy="${y-8}" r="18" class="ltr"/><text x="${cx}" y="${y}" text-anchor="middle" class="ltrt">${letter}</text>`:`<text x="${cx}" y="${y}" text-anchor="middle" class="nm">${txt}</text>`;
+  const cc=L?'n':'c',hh=L?'n':'h';
+  return `<svg class="cyc" viewBox="0 0 700 205" role="img" aria-label="Gas, liquid and solid with arrows showing the four changes of state">
+  ${box(0,'gas','GAS')}${box(1,'liquid','LIQUID')}${box(2,'solid','SOLID')}
+  ${arrow(140,278,72,cc)}${arrow(425,563,72,cc)}${arrow(278,140,118,hh)}${arrow(563,425,118,hh)}
+  ${tag(209,46,'Condensation','A')}${tag(494,46,'Freezing','B')}${tag(494,162,'Melting','C')}${tag(209,162,'Evaporation','D')}</svg>`;
+}
+
+/* ---------- question builders ---------- */
+const C=(q,opts,ans,why,x)=>Object.assign({t:'choice',q,opts,ans,why},x||{});
+const TF=(q,v,why)=>C(q,['True','False'],v?0:1,why);
+const PC=(q,v,why)=>C(q,['Physical change','Chemical change'],v==='p'?0:1,why);
+const TY=(q,ans,hint,why)=>({t:'type',q,ans,hint,why});
+const WR=(q,o)=>Object.assign({t:'write',q},o);
+const SV=(q,opts)=>({t:'choice',q,opts,ans:0,why:'',survey:1});
+
+const PHYS_NOTE='A <b>physical</b> change only changes the shape or the state. It is still the same stuff.';
+const CHEM_NOTE='A <b>chemical</b> change makes something new.';
+
+const CH=[
+/* 1 ------------------------------------------------------------------ */
+{n:1,subj:'English',title:'must and mustn’t',file:'Grade 6 – Week 9 Worksheet.pdf',
+learn:[
+ {t:'must = you have to',h:`<p class="ex">You <b>must</b> be on time.</p><p>Use <b>must</b> for a rule. It is necessary.</p>`},
+ {t:'mustn’t = not allowed',h:`<p class="ex">You <b>mustn’t</b> run in the corridors.</p><p>Use <b>mustn’t</b> when something is against the rules.</p>`},
+ {t:'Then the plain verb',h:`<p class="ex">She must <b>help</b>.</p><p class="ex bad">She musts help. &nbsp;She must to help. &nbsp;She must helping.</p><p>No <i>to</i>, no <i>-ing</i>, no <i>-s</i> after must or mustn’t.</p>`}],
+ar:'<b>must</b> تعني «يجب / لازم»، و<b>mustn’t</b> تعني «ممنوع / لا يجوز». بعد must وmustn’t نكتب الفعل بصيغته الأصلية مباشرة، بدون to وبدون ing وبدون s. صحيح: She must help. خطأ: She musts help.',
+sections:[
+{h:'1. True or false?',note:'Read the text. Then tap True or False.',
+ pre:`<div class="passage"><p>My school has many rules. We <b>must</b> arrive on time and we <b>must</b> listen to our teachers. We <b>mustn’t</b> use phones during lessons and we <b>mustn’t</b> run in the corridors. We <b>must</b> finish our homework, and we <b>mustn’t</b> copy from other pupils!</p></div>`,
+ qs:[
+  TF('There are lots of rules at his school.',true,'The text begins: “My school has many rules.”'),
+  TF('It’s OK to be late.',false,'The text says we <b>must</b> arrive on time, so being late is not OK.'),
+  TF('It’s necessary to listen to the teachers.',true,'“We <b>must</b> listen to our teachers.” <b>must</b> means it is necessary.'),
+  TF('It’s OK to use your phone in class.',false,'“We <b>mustn’t</b> use phones during lessons.” <b>mustn’t</b> means not allowed.'),
+  TF('It’s not necessary to do your homework.',false,'“We <b>must</b> finish our homework.” It is necessary.')]},
+{h:'2. Choose the answer!',note:'Tap the word that fits the gap.',
+ qs:[
+  C('You must ___ attention at school.',['to pay','pay','paying'],1,'After <b>must</b> we use the plain verb: <b>pay</b>. No “to”, no “-ing”.'),
+  C('You must ___ quiet in the library.',['be','to be','is'],0,'must + plain verb: <b>must be</b>.'),
+  C('You mustn’t ___ across the road.',['running','run','ran'],1,'After <b>mustn’t</b> we use the plain verb: <b>run</b>.'),
+  C('We ___ shout in class.',['mustn’t to','must no','mustn’t'],2,'The negative of must is <b>mustn’t</b>. We do not say “must no” or “mustn’t to”.'),
+  C('She ___ help her brother with his homework.',['must to','must','musts'],1,'<b>must</b> never changes. Not “musts” (no -s) and not “must to”.'),
+  C('You must ___ after your pets.',['looking','to look','look'],2,'must + plain verb: <b>look</b> after.'),
+  C('We mustn’t ___ a mess when we paint!',['to make','made','make'],2,'mustn’t + plain verb: <b>make</b>.'),
+  C('He ___ keep his bedroom tidy.',['must','must to','musts'],0,'He is “he”, but <b>must</b> stays the same: no -s, no “to”.')]},
+{h:'3. Make it right!',note:'Find the mistake (it is highlighted). Type the whole sentence correctly. Capital letters and the full stop do not matter.',
+ qs:[
+  TY('You must <mark>doing</mark> your homework.',['You must do your homework.'],'After must, use the plain verb.','must + <b>do</b>, not “doing”.'),
+  TY('You must <mark>to</mark> be careful when cutting food.',['You must be careful when cutting food.'],'Remove one little word after must.','No “to” after must.'),
+  TY('You mustn’t <mark>shouting</mark> in the museum.',['You mustn’t shout in the museum.'],'Look at the verb after mustn’t.','mustn’t + <b>shout</b>. No “-ing”.'),
+  TY('He <mark>musts</mark> wear a school uniform.',['He must wear a school uniform.'],'must never takes an ending.','<b>must</b> has no -s, even after “he”.'),
+  TY('We mustn’t <mark>to</mark> pick the flowers at the park.',['We mustn’t pick the flowers at the park.'],'Remove one little word after mustn’t.','No “to” after mustn’t.'),
+  TY('You <mark>no must</mark> run at the swimming pool.',['You mustn’t run at the swimming pool.','You must not run at the swimming pool.'],'How do we say “not allowed”?','The negative is <b>mustn’t</b> (or must not).'),
+  TY('We must <mark>looking</mark> both ways when crossing the road.',['We must look both ways when crossing the road.'],'Look at the verb after must.','must + <b>look</b>. No “-ing”.'),
+  TY('She mustn’t <mark>took</mark> toys to school.',['She mustn’t take toys to school.','She must not take toys to school.'],'After mustn’t, use the plain verb, not the past.','mustn’t + <b>take</b>. Not “took”.')]},
+{h:'4. Write and draw!',note:'Draw your school on paper. Then write your school rules here, like in the text above.',
+ qs:[WR('Write 3 school rules. Use <b>must</b> and <b>mustn’t</b>.',{free:1,model:'At my school we must be on time and we must listen to the teacher. We mustn’t run in the corridors.',ph:'You must …  You mustn’t …'})]}
+]},
+
+/* 2 ------------------------------------------------------------------ */
+{n:2,subj:'English',title:'who, which, that',file:'Grade 5 – Week 9 Worksheet – Relative conjunctions.pdf',
+learn:[
+ {t:'who = people',h:`<p class="ex">The boy <b>who</b> is smiling is my friend.</p>`},
+ {t:'which = animals and things',h:`<p class="ex">The bag <b>which</b> is blue is mine.</p>`},
+ {t:'that = any of them',h:`<p class="ex">The dog <b>that</b> can swim is clever.</p>`},
+ {t:'What is a relative clause?',wide:1,h:`<p>It gives more information about a noun. It comes right after the person, animal or thing.</p><p class="ex">I know a girl. She speaks three languages. → I know a girl <b>who</b> speaks three languages.</p><p>Quick check: person = <b>who</b> · animal or thing = <b>which</b> · any of them = <b>that</b>.</p>`}],
+ar:'<b>who</b> نستخدمها مع الأشخاص، و<b>which</b> مع الحيوانات والأشياء، و<b>that</b> تصلح مع الجميع. الجملة التي تبدأ بها تعطي معلومة إضافية عن الاسم الذي قبلها. وفي امتحان المراجعة (الفصل 9) نستخدم <b>where</b> مع الأماكن.',
+sections:[
+{h:'Activity 1 · Choose the correct word',note:'If a choice is not right for that noun, it is marked wrong.',
+ qs:[
+  C('The teacher ___ helps us is kind.',['who','which'],0,'A teacher is a person: <b>who</b>.'),
+  C('This is the bike ___ has a basket.',['who','which'],1,'A bike is a thing: <b>which</b>.'),
+  C('I have a friend ___ loves football.',['that','which'],0,'A friend is a person, so <b>which</b> is wrong. <b>that</b> works for people too.'),
+  C('The rabbit ___ has long ears is cute.',['who','that'],1,'A rabbit is an animal, so <b>who</b> is not used. <b>that</b> works for animals.'),
+  C('The cake ___ Mum made is delicious.',['who','which'],1,'A cake is a thing: <b>which</b>.'),
+  C('The doctor ___ works here is friendly.',['which','who'],1,'A doctor is a person: <b>who</b>.')]},
+{h:'Activity 2 · Match and make a sentence',note:'Tap the ending that goes with the beginning.',
+ qs:[
+  C('The girl ___',['which has a red door.','who won the race.','that can sing.'],1,'The girl is a person: <b>The girl who won the race.</b>'),
+  C('I saw a bird ___',['which has a red door.','who won the race.','that can sing.'],2,'A bird can sing: <b>I saw a bird that can sing.</b>'),
+  C('This is the house ___',['which has a red door.','who won the race.','that can sing.'],0,'A house has a door: <b>This is the house which has a red door.</b>')]},
+{h:'Activity 3 · Build-a-sentence workshop',note:'Join the two sentences. Pick who, which or that.',
+ qs:[
+  C('<span class="src2">The boy is my cousin. He is wearing a green shirt.</span><br>The boy ___ is wearing a green shirt is my cousin.',['who','which','that'],[0,2],'The boy is a person, so <b>who</b> is best. <b>that</b> also works.',{best:0}),
+  C('<span class="src2">I like the movie. It is about space.</span><br>I like the movie ___ is about space.',['who','which','that'],[1,2],'A movie is a thing, so <b>which</b> is best. <b>that</b> also works.',{best:1}),
+  C('<span class="src2">We saw a horse. It had a white tail.</span><br>We saw a horse ___ had a white tail.',['who','which','that'],[1,2],'A horse is an animal: <b>which</b> (or <b>that</b>).',{best:1}),
+  C('<span class="src2">She is the nurse. She helped my grandma.</span><br>She is the nurse ___ helped my grandma.',['who','which','that'],[0,2],'A nurse is a person: <b>who</b> (or <b>that</b>).',{best:0}),
+  C('<span class="src2">This is the pencil. It belongs to Ali.</span><br>This is the pencil ___ belongs to Ali.',['who','which','that'],[1,2],'A pencil is a thing: <b>which</b> (or <b>that</b>).',{best:1})]},
+{h:'Activity 4 · Who, which or that?',note:'Fill the gap.',
+ qs:[
+  C('A pilot is a person ___ flies a plane.',['who','which','that'],[0,2],'A pilot is a person: <b>who</b> is best, <b>that</b> also works.',{best:0}),
+  C('A whale is an animal ___ lives in the sea.',['who','which','that'],[1,2],'A whale is an animal: <b>which</b> is best, <b>that</b> also works.',{best:1}),
+  C('This is the book ___ I borrowed from the library.',['who','which','that'],[1,2],'A book is a thing: <b>which</b> is best, <b>that</b> also works.',{best:1}),
+  C('The woman ___ teaches art is very creative.',['who','which','that'],[0,2],'A woman is a person: <b>who</b> is best, <b>that</b> also works.',{best:0}),
+  C('I found a toy ___ makes funny sounds.',['who','which','that'],[1,2],'A toy is a thing: <b>which</b> is best, <b>that</b> also works.',{best:1}),
+  C('The boy ___ sits next to me is helpful.',['who','which','that'],[0,2],'A boy is a person: <b>who</b> is best, <b>that</b> also works.',{best:0})]},
+{h:'Activity 5 · Write your own',note:'Write a sentence about a person, an animal and a thing.',
+ qs:[
+  WR('A person <b>who</b> …',{free:1,model:'A person who helps sick people is a doctor.',ph:'A person who …'}),
+  WR('An animal <b>which</b> …',{free:1,model:'An animal which lives in the sea is a whale.',ph:'An animal which …'}),
+  WR('A thing <b>that</b> …',{free:1,model:'A thing that makes music is a guitar.',ph:'A thing that …'})]},
+{h:'Exit ticket · Show what you know',
+ qs:[
+  WR('My school has a teacher <b>who</b> …',{free:1,model:'My school has a teacher who teaches science.',ph:'My school has a teacher who …'}),
+  WR('One animal <b>that</b> …',{free:1,model:'One animal that can fly is a bird.',ph:'One animal that …'}),
+  WR('A thing <b>which</b> …',{free:1,model:'A thing which has two wheels is a bicycle.',ph:'A thing which …'}),
+  SV('How do you feel about who, which and that?',['I can do it!','I need practice','Help me, please'])]}
+]},
+
+/* 3 ------------------------------------------------------------------ */
+{n:3,subj:'Science',title:'Quiz 4: Solid, Liquid, Gas',file:'Quiz 4 grade 5 lesson 4 Solid liquid gas 2024-2025.pdf',
+learn:[
+ {t:'Solid',h:`<p>Definite shape and volume. Particles are tightly packed and vibrate in place.</p>`},
+ {t:'Liquid',h:`<p>Definite volume, no definite shape. It takes the shape of its container. Particles slide past each other.</p>`},
+ {t:'Gas',h:`<p>No definite shape or volume. Particles are far apart and move very fast.</p>`},
+ {t:'Adding or removing energy',wide:1,h:`<p><b>Adding energy</b> (heating): melting (solid → liquid) and evaporation (liquid → gas).</p><p><b>Removing energy</b> (cooling): condensation (gas → liquid) and freezing (liquid → solid).</p>`}],
+ar:'الصلب له شكل وحجم ثابتان. السائل له حجم ثابت وشكله يتغير حسب الإناء. الغاز ليس له شكل ولا حجم ثابت. التسخين (إضافة طاقة): انصهار وتبخر. التبريد (إزالة طاقة): تكثف وتجمد.',
+sections:[
+{h:'Question 1 · Solid, liquid or gas?',note:'5 marks',
+ qs:[
+  C('The states of matter that have <u>no definite</u> shape or volume.',['Solid','Liquid','Gas'],2,'Only a <b>gas</b> has no definite shape and no definite volume.'),
+  C('The state of matter that <u>takes the shape of its container</u>.',['Solid','Liquid','Gas'],[1,2],'A liquid takes the shape of its container. A gas does too, so either is true, but the expected answer is <b>Liquid</b>.',{best:1}),
+  C('Particles of this state move <u>very fast</u> and are <u>far apart</u>.',['Solid','Liquid','Gas'],2,'Fast and far apart is a <b>gas</b>.'),
+  C('The particles in this state are <u>tightly packed</u> and <u>vibrate in place</u>.',['Solid','Liquid','Gas'],0,'Tightly packed and vibrating in place is a <b>solid</b>.'),
+  C('The particles in this state are <u>less tightly packed</u> and can <u>slide past one another</u>.',['Solid','Liquid','Gas'],1,'Sliding past each other is a <b>liquid</b>.')]},
+{h:'Question 2 · Name the changes',note:'6 marks. Look at the picture. Each arrow is a change of state.',
+ pre:`${cycle('letters')}`,
+ qs:[
+  C('What is process <b>A</b>? (gas → liquid)',['Melting','Evaporation','Condensation','Freezing'],2,'Gas to liquid by cooling is <b>condensation</b>.'),
+  C('What is process <b>B</b>? (liquid → solid)',['Melting','Evaporation','Condensation','Freezing'],3,'Liquid to solid by cooling is <b>freezing</b>.'),
+  C('What is process <b>C</b>? (solid → liquid)',['Melting','Evaporation','Condensation','Freezing'],0,'Solid to liquid by heating is <b>melting</b>.'),
+  C('What is process <b>D</b>? (liquid → gas)',['Melting','Evaporation','Condensation','Freezing'],1,'Liquid to gas by heating is <b>evaporation</b>.'),
+  C('Which process needs <u>adding</u> energy?',['Melting','Evaporation','Condensation','Freezing'],[0,1],'Heating adds energy. <b>Melting</b> and <b>evaporation</b> both need it, so either is correct.'),
+  C('Which process needs <u>removing</u> energy?',['Melting','Evaporation','Condensation','Freezing'],[2,3],'Cooling removes energy. <b>Condensation</b> and <b>freezing</b> both need it, so either is correct.')]},
+{h:'Question 3 · Choose the correct answer',note:'4 marks',
+ qs:[
+  C('When you heat ice cubes, the particles will move …',['slower','faster'],1,'Heat is energy. More energy makes particles move <b>faster</b>.'),
+  C('When liquid changes to gas it is called …',['condensation','melting point','evaporation','boiling point'],2,'<b>Evaporation</b> is the change from liquid to gas. Melting point and boiling point are temperatures, not changes.'),
+  C('A pencil is a …',['solid','liquid','gas','plasma'],0,'A pencil keeps its own shape and volume: a <b>solid</b>.'),
+  C('Which states of matter have a <u>definite volume</u>?',['solid and gas','solid and liquid','gas and liquid','solid, liquid, and gas'],1,'Solids and liquids have a definite volume. A gas spreads out to fill any space.')]}
+]},
+
+/* 4 ------------------------------------------------------------------ */
+{n:4,subj:'Science',title:'Quiz: States of Matter',file:'quiz states of matter.pdf',
+learn:[
+ {t:'Three states',h:`<div class="pics3">${fig('Solid','solid')}${fig('Liquid','liquid')}${fig('Gas','gas')}</div>`},
+ {t:'Remember',h:`<ul class="tight"><li>Solid: particles vibrate in place.</li><li>Liquid: particles slide past each other.</li><li>Gas: particles are far apart and fast.</li><li>Heating adds energy. Cooling removes energy.</li></ul>`}],
+ar:'في الصلب الجسيمات متراصة وتهتز في مكانها، في السائل أقرب وتنزلق، وفي الغاز متباعدة وسريعة. الانصهار والتبخر يحتاجان طاقة. التجمد والتكثف يزيلان الطاقة.',
+sections:[
+{h:'Question 1 · True or false?',
+ qs:[
+  TF('Particles of solid matter are vibrating.',true,'Solid particles are tightly packed and <b>vibrate in place</b>.'),
+  TF('Freezing is when liquid turns to gas.',false,'Freezing is liquid → <b>solid</b>. Liquid → gas is evaporation.'),
+  TF('Condensation needs adding energy.',false,'Condensation is gas → liquid. It needs <b>removing</b> energy (cooling).'),
+  TF('Liquids have a definite volume.',true,'A liquid has a definite volume, but no definite shape.')]},
+{h:'Question 2 · Particles of solid and gas',note:'On paper you draw them. Here, play with the lab first. Then pick the right pictures.',
+ pre:`<div data-w="lab"></div>`,
+ qs:[
+  C('Which picture shows <b>solid</b> particles?',[picOpt('A','liquid'),picOpt('B','gas'),picOpt('C','solid')],2,'Solid particles are tightly packed in neat rows.',{pics:1}),
+  C('Which picture shows <b>gas</b> particles?',[picOpt('A','gas'),picOpt('B','solid'),picOpt('C','liquid')],0,'Gas particles are far apart and spread out.',{pics:1})]},
+{h:'Question 3 · Write the word in the correct blank',note:'Words: adding energy · liquid · three · gas',
+ qs:[
+  C('There are ___ states of matter.',['adding energy','liquid','three','gas'],2,'Solid, liquid and gas: <b>three</b>.'),
+  C('When you boil the water, you are changing water from liquid to ___.',['adding energy','liquid','three','gas'],3,'Boiling water turns into water vapour, which is a <b>gas</b>.'),
+  C('___: this state can be poured and takes the shape of its container.',['adding energy','liquid','three','gas'],1,'A <b>liquid</b> can be poured.'),
+  C('Liquids change into gases by ___.',['adding energy','liquid','three','gas'],0,'Heating gives energy. <b>Adding energy</b> turns a liquid into a gas.')]},
+{h:'Question 4 · Choose the correct answer',
+ qs:[
+  C(`<div class="pics3">${fig('A','solid')}${fig('B','liquid')}${fig('C','gas')}</div>What state of matter is beaker <b>B</b>?`,['Gas','Solid','Liquid'],2,'In B the particles are close but not in neat rows, and they can slide. That is a <b>liquid</b>.'),
+  C('State of matter with no definite shape or volume.',['solid','liquid','gas','none of above'],2,'<b>Gas</b>. A liquid has a definite volume.'),
+  C('Which form of matter does <u>not</u> take the shape of its container?',['liquid','solid','gas','air'],1,'A <b>solid</b> keeps its own shape. (Air is a gas, so it does take the shape.)'),
+  C('A change in state from a solid to a liquid.',['Condensing','Freezing','Melting','Vaporization'],2,'Solid → liquid is <b>melting</b>.'),
+  C('When a liquid is heated, the particles begin to …',['gain energy and move faster','gain energy and move slower','stop moving','lose energy and move faster'],0,'Heating gives energy, so the particles <b>move faster</b>.'),
+  C('The process of <u>removing energy</u> from a liquid.',['boiling','freezing','condensing','evaporating'],1,'Removing energy from a liquid makes it a solid: <b>freezing</b>.')]},
+{h:'Question 5 · Label the diagram',note:'Look at the picture. Name each arrow.',
+ pre:`${cycle('letters')}`,
+ qs:[
+  C('Arrow <b>A</b> (gas → liquid) is …',['condensing','freezing','evaporating','melting'],0,'Gas to liquid: <b>condensing</b>.'),
+  C('Arrow <b>B</b> (liquid → solid) is …',['condensing','freezing','evaporating','melting'],1,'Liquid to solid: <b>freezing</b>.'),
+  C('Arrow <b>C</b> (solid → liquid) is …',['condensing','freezing','evaporating','melting'],3,'Solid to liquid: <b>melting</b>.'),
+  C('Arrow <b>D</b> (liquid → gas) is …',['condensing','freezing','evaporating','melting'],2,'Liquid to gas: <b>evaporating</b>.')]}
+]},
+
+/* 5 ------------------------------------------------------------------ */
+{n:5,subj:'Science',title:'Lesson Check: Solids, Liquids, Gases',file:'Lesson Check Answer Key – Solids, Liquids, and Gases.pdf',
+learn:[
+ {t:'Particles',wide:1,h:`<div class="pics3">${fig('Gas','gas')}${fig('Liquid','liquid')}${fig('Solid','solid')}</div><p>Gas particles are far apart. Liquid particles are closer. Solid particles are tightly packed.</p>`},
+ {t:'Why we can’t see water vapour',h:`<p>One particle is too small to see. A solid or liquid has many particles close together, so we can see it. Gas particles are far apart, so we cannot.</p>`}],
+ar:'نرى الصلب والسائل لأن جسيماتهما كثيرة ومتقاربة. أما بخار الماء فجسيماته متباعدة جدًا وصغيرة، لذلك لا نراه. السحابة التي تظهر فوق القدر هي قطرات ماء سائلة صغيرة وليست بخارًا.',
+sections:[
+{h:'Lesson check',
+ qs:[
+  C('Which one is <u>not</u> a normal state of matter?',['solid','liquid','gas','density'],3,'<b>Density</b> is a property (how heavy something is for its size), not a state.'),
+  C('Compared with a liquid, the particles of a gas are ___.',['farther apart','closer together'],0,'Gas particles have lots of space between them: <b>farther apart</b>.'),
+  C('A liquid keeps getting heat energy. What will it turn into?',['solid','liquid','gas','metal'],2,'More energy lets particles spread apart. The liquid becomes a <b>gas</b>.'),
+  WR('List the three usual states of matter.',{keys:[['solid'],['liquid'],['gas']],model:'Solid, liquid, and gas.',ph:'Type the three states'}),
+  C('Ice, water and water vapor are three ___ of the same substance.',['states','sizes','colors'],0,'They are the three <b>states</b> of water.'),
+  C('Particles that are packed tightly and only vibrate in place belong to a ___.',['solid','liquid','gas','matter'],0,'Tightly packed and vibrating: <b>solid</b>.'),
+  WR(`<div class="pics3">${fig('Gas','gas')}${fig('Liquid','liquid')}${fig('Solid','solid')}</div>Look at the particle models. Explain why an ice cube and liquid water can be seen but water vapor cannot.`,
+   {checks:['Liquid and solid have many particles close together.','Many particles together can be seen, even though one particle is too small to see.','Gas particles are far apart, so water vapor (a gas) cannot be seen.'],
+    model:'The liquid and solid models show many particles close together. When many particles are together we can see them, even though one particle is too small to see. In the gas model the particles are far apart, so we cannot see water vapor. (The cloud over a boiling pot is tiny drops of liquid water, not vapor.)',ph:'Write your explanation here'})]}
+]},
+
+/* 6 ------------------------------------------------------------------ */
+{n:6,subj:'Science',title:'Lesson Check: Physical and Chemical Changes',file:'Lesson Check Answer Key – Physical and Chemical Changes.pdf',
+learn:[
+ {t:'Physical change',h:`<p>The shape or state changes. It is still the <b>same stuff</b>.</p><p class="ex">melting ice · tearing paper · mixing food colouring in water</p>`},
+ {t:'Chemical change',h:`<p>A <b>new</b> substance is made.</p><p class="ex">burning wood · rust · baking · an apple turning brown</p>`},
+ {t:'Signs of a chemical change',wide:1,h:`<ul class="tight"><li>a new colour or smell</li><li>a gas (bubbles)</li><li>heat or light</li><li>a new solid forms</li></ul>`}],
+ar:'التغير الفيزيائي يغيّر الشكل أو الحالة فقط والمادة تبقى نفسها (ذوبان الثلج، تمزيق الورق). التغير الكيميائي ينتج مادة جديدة (حرق الخشب، صدأ الحديد). من علاماته: لون جديد، رائحة جديدة، غاز أو فقاعات، حرارة أو ضوء.',
+sections:[
+{h:'Lesson check',
+ qs:[
+  C('Which event is a <b>chemical</b> change?',['Ice melting in a cup','Logs burning in a campfire','Water boiling in a kettle','Butter melting in a pan'],1,'Burning wood makes ash, smoke and new gases: a <b>chemical</b> change. Melting is physical.'),
+  C('Stirring food colouring into water is a ___ change.',['physical','chemical'],0,'You can still see water and colouring. Nothing new is made: <b>physical</b>.'),
+  C('Which is a <b>physical</b> change?',['a burning candle','a rusty bicycle','melting ice cream','a firework going off'],2,'Ice cream melting is only a change of state: <b>physical</b>. The others make new substances.'),
+  WR('Ali cut an apple and left it on a plate. Later it was brown. What kind of change happened? Explain.',{keys:[['brown','color','colour'],['chemical']],model:'The apple turned brown. This is a chemical change, because a new colour is a sign of a chemical change. Something in the apple reacted with the oxygen in the air.',ph:'The apple … because …'}),
+  C('Which are signs of a chemical change? Select all that apply.',['the mass changes','a gas forms','a mixture forms','the temperature changes'],[1,3],'A new gas (bubbles) and a change in temperature (heat) are signs. Other signs: new colour, new smell.',{multi:1}),
+  C('Which is a <b>chemical</b> change?',['glass breaking','paper tearing','clay being shaped','rust forming on a car'],3,'Rust is a new substance: <b>chemical</b>. Breaking, tearing and shaping only change the shape.'),
+  C('Baking soda and vinegar mix and make carbon dioxide gas. This is a ___ change.',['physical','chemical'],1,'A new gas is made: <b>chemical</b>.'),
+  C('Which kind of change gives an object a new shape while the matter stays the same type?',['chemical change','physical change','gradual change','sudden change'],1,'Same matter, new shape: <b>physical change</b>.'),
+  WR('What do we call two or more substances blended together without making anything new?',{keys:[['mixture']],model:'A mixture.',ph:'A …'}),
+  C('Which is a <b>chemical</b> change?',['a coin rusts','a lump of clay is cut in two','a stick of wood splinters','salt and pepper are stirred together'],0,'Rust is a new substance: <b>a coin rusts</b>. Splitting and splintering are physical. Salt and pepper just make a mixture.')]}
+]},
+
+/* 7 ------------------------------------------------------------------ */
+{n:7,subj:'Science',title:'Physical and Chemical Changes, 3 Levels',file:'Grade5 L3 Physical and Chemical Changes Worksheet 1.pdf',
+learn:[
+ {t:'One question to ask',h:`<p>Is there a <b>new thing</b> after the change?</p><p><b>No</b> → physical. <b>Yes</b> → chemical.</p>`},
+ {t:'Careful with the apple',h:`<p>Cutting an apple is <b>physical</b> (only the shape changes). An apple turning brown later is <b>chemical</b>.</p>`}],
+ar:'اسأل نفسك: هل ظهرت مادة جديدة؟ نعم = تغير كيميائي، لا = تغير فيزيائي. تقطيع التفاحة فيزيائي، أما اسمرارها بعد وقت فهو كيميائي.',
+sections:[
+{h:'Level 1 · Q1 Tick the correct box',level:1,note:'No writing. Just tap one.',
+ qs:[
+  PC('🍎 cutting an apple','p','Cutting changes the shape only. It is still an apple.'),
+  PC('🔥 burning wood','c','Wood turns into ash and smoke: something new.'),
+  PC('🧊 melting ice','p','Ice and water are the same stuff, only a different state.'),
+  PC('🍪 baking a cookie','c','Dough turns into a cookie: new colour, smell and texture.'),
+  PC('🔩 rusting nail','c','Rust is a new substance (orange, flaky).'),
+  PC('✂️ cutting paper','p','Only the size and shape change. It is still paper.')]},
+{h:'Level 1 · Q2 Circle the CHEMICAL change in each pair',level:1,
+ qs:[
+  C('Which is chemical?',['🍫 melting chocolate','🍌 rotting banana'],1,'A rotting banana turns brown and smelly: new stuff, so <b>chemical</b>. Melting chocolate is still chocolate.'),
+  C('Which is chemical?',['🕯️ burning candle','🧂 salt in water'],0,'A burning candle makes new gases, heat and light: <b>chemical</b>. Salt in water can be recovered: physical.')]},
+{h:'Level 1 · Q3 Circle the picture(s) that show a PHYSICAL change',level:1,note:'Tap all that apply, then Check. (There are two.)',
+ qs:[C('Which show a <b>physical</b> change?',['🧊 melting ice','🍳 frying an egg','✂️ cutting paper'],[0,2],'Melting ice and cutting paper are physical. Frying an egg makes something new (chemical).',{multi:1})]},
+{h:'Level 2 · Q1 Tick the correct box',level:2,
+ qs:[
+  PC('♨️ boiling water','p','Water becomes water vapour. It is still water: a change of state.'),
+  PC('🍳 frying an egg','c','The egg turns solid and white: new stuff, and it cannot go back.'),
+  PC('🍫 melting chocolate','p','Still chocolate, only a different state.'),
+  PC('🍌 rotting banana','c','New colour and new smell: chemical.'),
+  PC('🧂 salt in water','p','The salt mixes in. No new substance is made.'),
+  PC('🕯️ burning candle','c','It makes heat, light and new gases: chemical.')]},
+{h:'Level 2 · Q2 Match the picture to the correct word',level:2,
+ qs:[
+  PC('🧊 melting ice','p','Only the state changes.'),
+  PC('🔩 rusting nail','c','Rust is new.'),
+  PC('✂️ cutting paper','p','Only the shape changes.'),
+  PC('🍪 baking a cookie','c','A new thing is made.')]},
+{h:'Level 2 · Q3 Write ONE word from the word bank',level:2,
+ pre:`<div class="chiprow"><span>melt</span><span>burn</span><span>rust</span><span>cut</span><span>new</span></div>`,
+ qs:[
+  C('Ice turns into water. It can ___.',['melt','burn','rust','cut','new'],0,'Ice <b>melts</b>.'),
+  C('Wood turns into ash. It can ___.',['melt','burn','rust','cut','new'],1,'Wood <b>burns</b>.'),
+  C('A nail turns orange. It can ___.',['melt','burn','rust','cut','new'],2,'An iron nail <b>rusts</b>.'),
+  C('A chemical change makes a ___ thing.',['melt','burn','rust','cut','new'],4,'A chemical change makes a <b>new</b> thing.')]},
+{h:'Level 3 · Q1 Tick the correct box',level:3,
+ qs:[
+  PC('🥛 sour milk','c','Sour milk has a new smell and taste: chemical.'),
+  PC('🧂 salt in water','p','No new substance.'),
+  PC('🔥 burning wood','c','Ash and smoke are new substances.')]},
+{h:'Level 3 · Q2 Match the picture to the correct word',level:3,
+ qs:[
+  PC('🍫 melting chocolate','p','Only the state changes.'),
+  PC('🔩 rusting nail','c','Rust is a new substance.'),
+  PC('🍎 cutting apple','p','Only the shape changes.')]},
+{h:'Level 3 · Q3 Short answer',level:3,note:'Pick the short answer.',
+ pre:`<div class="chiprow"><span>new smell</span><span>new colour</span><span>same thing</span><span>new gas</span><span>shape only</span></div>`,
+ qs:[
+  C('Milk goes sour. What tells you it is chemical?',['new smell','new colour','same thing','new gas','shape only'],0,'Sour milk smells different: a <b>new smell</b>.'),
+  C('A nail goes orange. What tells you it is chemical?',['new smell','new colour','same thing','new gas','shape only'],1,'Orange rust is a <b>new colour</b>.'),
+  C('You cut paper. What changed?',['new smell','new colour','same thing','new gas','shape only'],4,'Only the shape changed: <b>shape only</b>.'),
+  C('Ice melts to water. Is it a new thing?',['new smell','new colour','same thing','new gas','shape only'],2,'It is still water: the <b>same thing</b>.')]},
+{h:'Level 3 · Q4 Sort the words',level:3,note:'Is it a physical or a chemical change?',
+ qs:[
+  PC('melting','p','Only the state changes.'),
+  PC('burning','c','Burning makes new substances.'),
+  PC('cutting','p','Only the shape changes.'),
+  PC('rusting','c','Rust is new.'),
+  PC('freezing','p','Water to ice is the same stuff.'),
+  PC('baking','c','Baking makes a new thing.')]}
+]},
+
+/* 8 ------------------------------------------------------------------ */
+{n:8,subj:'Science',title:'The Lesson: Solids, Liquids, Gases',file:'solidsliquidsgas.pdf (teacher notes)',
+learn:[
+ {t:'The three states',wide:1,h:`<div class="tbl"><table><tr><th></th><th>Solid</th><th>Liquid</th><th>Gas</th></tr><tr><th>Shape</th><td>definite</td><td>no definite shape (takes its container’s)</td><td>no definite shape (takes its container’s)</td></tr><tr><th>Volume</th><td>definite</td><td>definite</td><td>no definite volume</td></tr><tr><th>Particles</th><td>tightly packed, vibrate in place</td><td>less tightly packed, move around each other</td><td>far apart, move quickly in all directions</td></tr></table></div>`},
+ {t:'Particle lab',wide:1,h:`<p>Move the slider. Add energy (hot) and remove energy (cold).</p><div data-w="lab"></div>`},
+ {t:'Changing states',wide:1,h:`${cycle('names')}<p class="legend"><b class="h">Red arrows</b> = energy is added (heating). <b class="c">Blue arrows</b> = energy is removed (cooling).</p>`},
+ {t:'Adding energy',h:`<ul class="tight"><li>Particles move faster.</li><li>Fast enough, they slide past each other: solid → liquid (<b>melting</b>).</li><li>More energy: they spread apart: liquid → gas (<b>evaporation</b>).</li></ul>`},
+ {t:'Removing energy',h:`<ul class="tight"><li>Particles slow down and come closer.</li><li>Gas → liquid (<b>condensation</b>).</li><li>Liquid → solid (<b>freezing</b>).</li></ul>`},
+ {t:'Examples',h:`<ul class="tight"><li>Melting: chocolate, ice, butter, ice cream.</li><li>Evaporation: boiling water becomes water vapour.</li><li>Freezing: melted ice cream or wax cools and becomes solid.</li><li>Condensation: drops on the side of a cold bowl.</li></ul>`},
+ {t:'Temperature',h:`<p>Temperature is a measure of the movement of particles as they gain or lose energy.</p>`}],
+ar:'<b>Solid</b> صلب · <b>Liquid</b> سائل · <b>Gas</b> غاز · <b>Melting</b> انصهار · <b>Evaporation</b> تبخر · <b>Condensation</b> تكثف · <b>Freezing</b> تجمد · <b>Particles</b> جسيمات · <b>Energy</b> طاقة · <b>Volume</b> حجم · <b>Shape</b> شكل. درجة الحرارة مقياس لحركة الجسيمات.',
+sections:[
+{h:'Check yourself',note:'Questions from the lesson notes.',
+ qs:[
+  C('Which state has a definite shape and a definite volume?',['solid','liquid','gas'],0,'A <b>solid</b> keeps its own shape and volume.'),
+  C('Which state has a definite volume but <u>no</u> definite shape?',['solid','liquid','gas'],1,'A <b>liquid</b>: it takes the shape of its container.'),
+  C('Particles move quickly in all directions. Which state?',['solid','liquid','gas'],2,'<b>Gas</b> particles are far apart and fast.'),
+  C('Melting is a change from …',['solid to liquid','liquid to gas','gas to liquid','liquid to solid'],0,'Melting is <b>solid to liquid</b> by heating.'),
+  C('Evaporation is a change from …',['solid to liquid','liquid to gas','gas to liquid','liquid to solid'],1,'Evaporation is <b>liquid to gas</b> by heating.'),
+  C('Condensation is a change from …',['solid to liquid','liquid to gas','gas to liquid','liquid to solid'],2,'Condensation is <b>gas to liquid</b> by cooling.'),
+  C('When energy is added, the particles move …',['slower','faster','the same'],1,'More energy makes particles move <b>faster</b>.'),
+  C('Why do drops appear on the outside of a cold glass?',['The glass leaks.','Water vapour condenses when it touches a cool object.','The glass is melting.'],1,'Water vapour in the air touches the cool glass and <b>condenses</b> into liquid drops.'),
+  C('After a candle burns, the wax cools and becomes solid. This is …',['melting','freezing','evaporation'],1,'Liquid wax losing energy and becoming solid is <b>freezing</b>.'),
+  C('Temperature is a measure of the …',['colour of particles','movement of particles','size of particles'],1,'Temperature measures the <b>movement of particles</b> as they gain or lose energy.')]}
+]},
+
+/* 9 ------------------------------------------------------------------ */
+{n:9,subj:'English',title:'English CA2 Review Pack',file:'Grade 5 – Term 1 – English CA2 Review Pack.pdf',
+learn:[
+ {t:'Vocabulary',wide:1,h:`<div class="tbl"><table><tr><th>Word</th><th>Meaning</th><th>بالعربي</th></tr><tr><td><b>amphibian</b></td><td>an animal that can live in water and on land</td><td>برمائي</td></tr><tr><td><b>reflect</b></td><td>send light back, like a mirror</td><td>يعكس</td></tr><tr><td><b>survive</b></td><td>stay alive</td><td>ينجو / يبقى حيًا</td></tr><tr><td><b>lithium</b></td><td>a metal used in phone batteries</td><td>الليثيوم</td></tr><tr><td><b>empty</b></td><td>with nothing, or almost nothing, in it</td><td>فارغ</td></tr><tr><td><b>regrow</b></td><td>grow again</td><td>ينمو من جديد</td></tr></table></div>`},
+ {t:'who · which · where',wide:1,h:`<ul class="tight"><li><b>who</b> for people: A scientist is a person <b>who</b> studies animals.</li><li><b>which</b> for animals and things: The axolotl is an animal <b>which</b> lives in water.</li><li><b>where</b> for places: This is the lake <b>where</b> the axolotls live.</li></ul><p>Tip: if the next word is a verb (lives, looks), use who or which. If a new subject comes next (the axolotls live), use where.</p>`}],
+ar:'<b>who</b> للأشخاص، <b>which</b> للحيوانات والأشياء، <b>where</b> للأماكن. إذا جاء بعد الفراغ فعل مباشرة (looks / lives) نستخدم who أو which. وإذا جاء بعده فاعل جديد (the axolotls live) نستخدم where. جرّب وضع «Exam» أعلى الصفحة ليظهر التصحيح بعد الانتهاء من كل الأسئلة.',
+sections:[
+{h:'I. Reading · 1 True or false',note:'Read the passage. Then tap True or False.',
+ pre:`<div class="passage"><h3>The Amazing Axolotl</h3><p>The axolotl is an unusual animal that lives in lakes near Mexico City. Some people think it looks like a smiling fish, but it is not a fish. It is an amphibian. Unlike most amphibians, the axolotl stays in its young form all its life. It keeps its gills and lives in water, even when it becomes an adult.</p><p>The axolotl has another amazing ability. If it loses a leg, it can grow a new one. Scientists study this animal because they want to understand how it can regrow parts of its body. Sadly, there are not many axolotls left today. The water in their lakes is becoming dirty, and their homes are disappearing. People are trying to protect them by cleaning the water and making safe places for them to live.</p></div>`,
+ qs:[
+  TF('The axolotl lives in lakes near Mexico City.',true,'The first sentence says it lives in lakes near Mexico City.'),
+  TF('The axolotl is a type of fish.',false,'The text says it is not a fish. It is an <b>amphibian</b>.'),
+  TF('The axolotl keeps its gills when it becomes an adult.',true,'“It keeps its gills … even when it becomes an adult.”'),
+  TF('Scientists are interested in the axolotl because it can regrow parts of its body.',true,'Scientists study it to understand how it can regrow parts of its body.'),
+  TF('The number of axolotls is increasing because the water is becoming cleaner.',false,'The text says there are not many left, and the water is becoming <b>dirty</b>.')]},
+{h:'I. Reading · 2 Choose the best answer',
+ pre:`<div class="passage"><h3>A Giant Mirror in Bolivia</h3><p>Salar de Uyuni is a very large salt flat in Bolivia, South America. Its ground is white and flat, so it looks like snow. However, it is made of salt. During most of the year, the place is dry and quiet. There are very few plants and animals, so it often looks empty.</p><p>After it rains, a thin layer of water covers the ground. The water reflects the sky, clouds, and mountains. This makes the salt flat look like a giant mirror. Many tourists visit the area to enjoy the beautiful view and take unusual photographs. The salt flat also contains lithium, a metal used in phone batteries. People need to protect this special place because tourism and mining can affect its environment.</p></div>`,
+ qs:[
+  C('Where is Salar de Uyuni?',['In Mexico','In Bolivia','In Europe'],1,'The first sentence: a salt flat in <b>Bolivia</b>, South America.'),
+  C('What is the ground of Salar de Uyuni made of?',['Snow','Sand','Salt'],2,'It looks like snow, “however, it is made of <b>salt</b>”.'),
+  C('What happens after it rains?',['Water covers the ground.','The ground becomes green.','The animals leave the area.'],0,'“A thin layer of water covers the ground.”'),
+  C('Why do tourists visit Salar de Uyuni?',['To study fish','To go fishing','To see the beautiful reflection and take photos'],2,'They come to enjoy the view and take unusual photographs.'),
+  C('What is lithium used for?',['Making clothes','Phone batteries','Cleaning water'],1,'Lithium is a metal used in <b>phone batteries</b>.')]},
+{h:'II. Vocabulary · 3 Complete each sentence',
+ pre:`<div class="chiprow"><span>amphibian</span><span>reflect</span><span>survive</span><span>lithium</span><span>empty</span><span>regrow</span></div>`,
+ qs:[
+  C('A frog is an ___ because it can live in water and on land.',['amphibian','reflect','survive','lithium','empty','regrow'],0,'An <b>amphibian</b> lives in water and on land.'),
+  C('Some animals need clean water and food to ___.',['amphibian','reflect','survive','lithium','empty','regrow'],2,'To <b>survive</b> is to stay alive.'),
+  C('The water on the salt flat can ___ the sky like a mirror.',['amphibian','reflect','survive','lithium','empty','regrow'],1,'A mirror <b>reflects</b> what is in front of it.'),
+  C('The axolotl can ___ a lost leg.',['amphibian','reflect','survive','lithium','empty','regrow'],5,'It can <b>regrow</b> (grow again) a lost leg.'),
+  C('The salt flat looks ___ because there are very few plants and animals.',['amphibian','reflect','survive','lithium','empty','regrow'],4,'With almost nothing there it looks <b>empty</b>. (lithium is the word left over.)')]},
+{h:'III. Grammar · 4 Choose the correct answer',
+ qs:[
+  C('The axolotl is an animal ___ lives in water.',['who','which','where'],1,'An animal: <b>which</b>.'),
+  C('A scientist is a person ___ studies animals.',['who','where','which'],0,'A person: <b>who</b>.'),
+  C('This is the lake ___ the axolotls live.',['which','who','where'],2,'A place, and a new subject follows (the axolotls): <b>where</b>.'),
+  C('___ does the axolotl live?',['What','Where','Who'],1,'We ask about a place: <b>Where</b>?'),
+  C('The salt flat is a place ___ looks like a giant mirror.',['who','where','which'],2,'Next comes the verb “looks”, so we need the subject word: <b>which</b>. We use <b>where</b> only when another subject follows.')]}
+]}
+];
+
+/* ids and flat lists */
+CH.forEach(ch=>{
+  ch.sections.forEach((s,si)=>s.qs.forEach((q,qi)=>{q.id=`c${ch.n}s${si}q${qi}`;q.ch=ch.n;}));
+  ch.all=[].concat.apply([],ch.sections.map(s=>s.qs));
+});
+/* simple Arabic explanation for every question (backticks mark English words) */
+const AR={"1": ["صحيح. الولد يبدأ بالقول إن في مدرسته قوانين كثيرة.", "خطأ. `must` تعني «يجب». والنص يقول إن علينا الوصول في الوقت، يعني التأخر غير مسموح.", "صحيح. `must` تعني أن الشيء لازم، والنص يقول لازم نستمع للمعلمين.", "خطأ. `mustn’t` تعني «ممنوع». والنص يقول إن استخدام الهاتف في الصف ممنوع.", "خطأ. النص يقول إن الواجب لازم (`must`)، يعني من الضروري أن نسويه.", "بعد `must` نكتب الفعل مباشرة: بدون `to` وبدون `ing`. الصحيح: `must pay` (يجب أن تنتبه).", "`must` + `be` معناها «يجب أن تكون». لا نقول `must to be`.", "بعد `mustn’t` نكتب الفعل الأصلي `run`. معنى الجملة: ممنوع أن تركض وأنت تعبر الشارع.", "الممنوع نعبّر عنه بـ `mustn’t`. لا نقول `must no` ولا `mustn’t to`.", "`must` لا تتغير مع `she` أو `he`. لا نضيف لها `s` ولا `to`.", "`must` + `look` معناها «يجب أن تعتني». (`look after` = يعتني بـ).", "بعد `mustn’t` نكتب `make`. معنى الجملة: ممنوع أن نعمل فوضى لما نرسم.", "مع `he` تبقى `must` كما هي، بدون `s` وبدون `to`. المعنى: يجب أن يُبقي غرفته مرتبة.", "بعد `must` نكتب الفعل الأصلي `do` وليس `doing`.", "نحذف `to`. نقول `must be` وليس `must to be`.", "بعد `mustn’t` الفعل الأصلي `shout` بدون `ing`. المعنى: ممنوع الصراخ في المتحف.", "`must` لا نضيف لها `s` حتى مع `he`.", "نحذف `to` بعد `mustn’t`. المعنى: ممنوع قطف الزهور.", "للمنع نقول `mustn’t` (أو `must not`). لا نقول `no must`.", "بعد `must` نكتب `look` بدون `ing`. المعنى: لازم ننظر في الاتجاهين.", "بعد `mustn’t` نستخدم الفعل الأصلي `take` وليس الماضي `took`.", "اكتب ثلاثة قوانين. ابدأ بـ `You must` للشيء الواجب، وبـ `You mustn’t` للشيء الممنوع. جوابك ممكن يكون مختلفًا عن المثال."], "2": ["المعلم شخص، فنستخدم `who` مع الأشخاص.", "الدراجة شيء، فنستخدم `which` مع الأشياء.", "الصديق شخص، لذلك `which` خطأ. أما `that` فتصلح مع الأشخاص أيضًا.", "الأرنب حيوان، لذلك `who` خطأ. أما `that` فتصلح مع الحيوانات.", "الكيكة شيء، فنستخدم `which`.", "الطبيب شخص، فنستخدم `who`.", "الفتاة شخص، فنكمل بـ `who won the race` (التي فازت بالسباق).", "الطائر يقدر يغني، فنكمل بـ `that can sing`.", "البيت له باب أحمر، فنكمل بـ `which has a red door`.", "الولد شخص، فـ `who` هي الأفضل. و`that` مقبولة أيضًا.", "الفيلم شيء، فـ `which` هي الأفضل. و`that` مقبولة أيضًا.", "الحصان حيوان، فنستخدم `which` (أو `that`).", "الممرضة شخص، فـ `who` هي الأفضل. و`that` مقبولة أيضًا.", "القلم شيء، فـ `which` هي الأفضل. و`that` مقبولة أيضًا.", "الطيار شخص، فـ `who` هي الأفضل. و`that` مقبولة أيضًا.", "الحوت حيوان، فـ `which` هي الأفضل. و`that` مقبولة أيضًا.", "الكتاب شيء، فـ `which` هي الأفضل. و`that` مقبولة أيضًا.", "المرأة شخص، فـ `who` هي الأفضل. و`that` مقبولة أيضًا.", "اللعبة شيء، فـ `which` هي الأفضل. و`that` مقبولة أيضًا.", "الولد شخص، فـ `who` هي الأفضل. و`that` مقبولة أيضًا.", "اكتب جملة عن شخص وابدأها بـ `A person who`. مثال: شخص يساعد المرضى هو طبيب. جوابك ممكن يكون مختلفًا.", "اكتب جملة عن حيوان وابدأها بـ `An animal which`. مثال: حيوان يعيش في البحر هو الحوت.", "اكتب جملة عن شيء وابدأها بـ `A thing that`. مثال: شيء يصدر موسيقى هو الجيتار.", "أكمل الجملة بفكرتك: معلم يعلّم مادة معينة. جوابك ممكن يكون مختلفًا عن المثال.", "أكمل الجملة عن حيوان: مثل الطائر الذي يقدر يطير. جوابك ممكن يكون مختلفًا.", "أكمل الجملة عن شيء: مثل الدراجة التي لها عجلتان. جوابك ممكن يكون مختلفًا.", ""], "3": ["الغاز فقط ليس له شكل ثابت ولا حجم ثابت.", "السائل يأخذ شكل الإناء الذي نضعه فيه. (الغاز أيضًا، لكن الجواب المتوقع هو `Liquid`).", "في الغاز الجسيمات متباعدة وتتحرك بسرعة كبيرة.", "في الصلب الجسيمات متراصة وتهتز في مكانها.", "في السائل الجسيمات أقل تراصًا وتنزلق فوق بعضها.", "من غاز إلى سائل بالتبريد: تكثف (`condensation`).", "من سائل إلى صلب بالتبريد: تجمد (`freezing`).", "من صلب إلى سائل بالتسخين: انصهار (`melting`).", "من سائل إلى غاز بالتسخين: تبخر (`evaporation`).", "التسخين يضيف طاقة: الانصهار والتبخر. أي واحد منهما جوابه صحيح.", "التبريد يزيل الطاقة: التكثف والتجمد. أي واحد منهما جوابه صحيح.", "الحرارة طاقة، والطاقة تجعل الجسيمات تتحرك أسرع.", "التبخر هو التحول من سائل إلى غاز. أما نقطة الانصهار ونقطة الغليان فهي درجات حرارة وليست تحولات.", "القلم يحتفظ بشكله وحجمه، لذلك هو مادة صلبة (`solid`).", "الصلب والسائل لهما حجم ثابت. أما الغاز فينتشر ليملأ المكان."], "4": ["صحيح. جسيمات المادة الصلبة تهتز في مكانها.", "خطأ. التجمد هو من سائل إلى صلب. أما من سائل إلى غاز فاسمه تبخر.", "خطأ. التكثف يحتاج إلى إزالة الطاقة (تبريد) وليس إضافتها.", "صحيح. للسائل حجم ثابت، لكن ليس له شكل ثابت.", "جسيمات الصلب متراصة في صفوف مرتبة.", "جسيمات الغاز متباعدة ومنتشرة في كل مكان.", "الحالات هي: صلب وسائل وغاز، يعني ثلاث (`three`).", "عند غلي الماء يتحول إلى بخار، والبخار غاز (`gas`).", "السائل (`liquid`) هو الذي نقدر نصبّه ويأخذ شكل الإناء.", "التسخين يعني إضافة طاقة (`adding energy`)، وهذا يحوّل السائل إلى غاز.", "في الكأس B الجسيمات قريبة من بعضها لكنها غير مرتبة وتنزلق، يعني سائل.", "الغاز ليس له شكل ثابت ولا حجم ثابت. أما السائل فله حجم ثابت.", "المادة الصلبة تحتفظ بشكلها. (الهواء غاز، لذلك يأخذ شكل الإناء).", "من صلب إلى سائل هو الانصهار (`melting`).", "التسخين يعطي طاقة، فتتحرك الجسيمات بسرعة أكبر.", "إزالة الطاقة من السائل تجعله صلبًا، وهذا هو التجمد (`freezing`).", "من غاز إلى سائل: تكثف (`condensing`).", "من سائل إلى صلب: تجمد (`freezing`).", "من صلب إلى سائل: انصهار (`melting`).", "من سائل إلى غاز: تبخر (`evaporating`)."], "5": ["الكثافة (`density`) خاصية للمادة وليست حالة من حالات المادة.", "بين جسيمات الغاز مسافات كبيرة، فهي أبعد عن بعضها (`farther apart`).", "الطاقة تجعل الجسيمات تبتعد عن بعضها، فيتحول السائل إلى غاز.", "الحالات الثلاث للمادة: صلب (`solid`) وسائل (`liquid`) وغاز (`gas`).", "الجليد والماء وبخار الماء هي ثلاث حالات (`states`) للماء نفسه.", "الجسيمات المتراصة التي تهتز في مكانها هي جسيمات المادة الصلبة.", "في الصلب والسائل جسيمات كثيرة قريبة من بعضها، فنراها. أما جسيمات الغاز فمتباعدة وصغيرة جدًا، فلا نرى بخار الماء."], "6": ["حرق الخشب ينتج رمادًا ودخانًا، يعني مواد جديدة. هذا تغير كيميائي.", "ما زلنا نرى الماء واللون ولم تتكون مادة جديدة. هذا تغير فيزيائي.", "ذوبان الآيس كريم تغير في الحالة فقط. هذا تغير فيزيائي.", "التفاحة صارت بنية. هذا تغير كيميائي، لأن اللون الجديد علامة على ذلك. فقد تفاعلت مع أكسجين الهواء.", "من علامات التغير الكيميائي: ظهور غاز، وتغير درجة الحرارة.", "الصدأ مادة جديدة، فهو تغير كيميائي.", "تكوّن غاز جديد (ثاني أكسيد الكربون)، فهو تغير كيميائي.", "الشكل يتغير والمادة تبقى نفسها. هذا هو التغير الفيزيائي.", "الخليط (`mixture`) هو أن تختلط مواد مع بعضها بدون أن تتكون مادة جديدة.", "صدأ العملة ينتج مادة جديدة، فهو كيميائي. أما قطع الطين وتفتت الخشب فهما فيزيائيان، وخلط الملح والفلفل يعطي خليطًا فقط."], "7": ["التقطيع يغيّر الشكل فقط، وتبقى تفاحة. هذا تغير فيزيائي.", "الخشب يتحول إلى رماد ودخان، يعني مواد جديدة. هذا تغير كيميائي.", "الثلج والماء نفس المادة بحالتين مختلفتين. هذا تغير فيزيائي.", "العجين يتحول إلى بسكويت بلون ورائحة جديدة. هذا تغير كيميائي.", "الصدأ مادة جديدة برتقالية اللون. هذا تغير كيميائي.", "يتغير الحجم والشكل فقط، والورق يبقى ورقًا. هذا تغير فيزيائي.", "الموز العفن له لون ورائحة جديدان، فهو كيميائي. أما الشوكولاتة المذابة فتبقى شوكولاتة.", "الشمعة المحترقة تنتج غازات وحرارة وضوءًا، فهي كيميائي. أما الملح في الماء فنقدر نرجّعه، فهو فيزيائي.", "ذوبان الثلج وقص الورق تغيران فيزيائيان. أما قلي البيضة فينتج شيئًا جديدًا، فهو كيميائي.", "الماء يتحول إلى بخار ويبقى ماءً. هذا تغير في الحالة، فهو فيزيائي.", "البيضة تتصلب وتصير بيضاء ولا ترجع كما كانت. هذا تغير كيميائي.", "ما زالت شوكولاتة، وتغيرت الحالة فقط. هذا تغير فيزيائي.", "الموز العفن له لون ورائحة جديدان. هذا تغير كيميائي.", "الملح يذوب في الماء ولا تتكون مادة جديدة. هذا تغير فيزيائي.", "الشمعة المحترقة تنتج حرارة وضوءًا وغازات جديدة. هذا تغير كيميائي.", "الثلج يتحول إلى ماء، والتغير في الحالة فقط: فيزيائي.", "الصدأ مادة جديدة: كيميائي.", "يتغير الشكل فقط: فيزيائي.", "تتكون مادة جديدة (بسكويت): كيميائي.", "الثلج عندما يذوب يصير ماءً، يعني `melt` (ينصهر).", "الخشب عندما يحترق يصير رمادًا، يعني `burn` (يحترق).", "المسمار الحديدي عندما يصدأ يصير برتقاليًا، يعني `rust` (يصدأ).", "التغير الكيميائي يصنع شيئًا جديدًا، يعني `new`.", "الحليب الحامض له رائحة وطعم جديدان. هذا تغير كيميائي.", "الملح يذوب في الماء ولا تتكون مادة جديدة. هذا تغير فيزيائي.", "الخشب المحترق يعطي رمادًا ودخانًا، وهما مادتان جديدتان: كيميائي.", "الشوكولاتة المذابة تتغير حالتها فقط: فيزيائي.", "الصدأ مادة جديدة: كيميائي.", "تقطيع التفاحة يغيّر الشكل فقط: فيزيائي.", "الحليب الحامض له `new smell` (رائحة جديدة)، وهذه علامة على التغير الكيميائي.", "المسمار صار برتقاليًا: `new colour` (لون جديد).", "عند قص الورق يتغير الشكل فقط: `shape only`.", "الثلج عندما يذوب يبقى ماءً: `same thing` (نفس الشيء).", "الانصهار: تتغير الحالة فقط، فهو فيزيائي.", "الحرق ينتج مواد جديدة، فهو كيميائي.", "القص يغيّر الشكل فقط، فهو فيزيائي.", "الصدأ ينتج مادة جديدة، فهو كيميائي.", "التجمد: الماء يصير ثلجًا وهو نفس المادة، فهو فيزيائي.", "الخَبز يصنع شيئًا جديدًا، فهو كيميائي."], "8": ["المادة الصلبة لها شكل ثابت وحجم ثابت.", "السائل حجمه ثابت، وشكله يتبع شكل الإناء.", "جسيمات الغاز متباعدة وتتحرك بسرعة في كل الاتجاهات.", "الانصهار (`melting`): من صلب إلى سائل بالتسخين.", "التبخر (`evaporation`): من سائل إلى غاز بالتسخين.", "التكثف (`condensation`): من غاز إلى سائل بالتبريد.", "كلما زادت الطاقة تحركت الجسيمات بسرعة أكبر.", "بخار الماء في الهواء يلامس الكأس البارد فيتكثف إلى قطرات ماء.", "الشمع السائل يفقد طاقة ويصير صلبًا. هذا هو التجمد (`freezing`).", "درجة الحرارة تقيس حركة الجسيمات."], "9": ["صحيح. النص يقول إن الأكسولوتل يعيش في بحيرات قرب مدينة مكسيكو.", "خطأ. النص يقول إنه ليس سمكة، بل برمائي (`amphibian`).", "صحيح. يحتفظ بخياشيمه حتى بعد أن يكبر.", "صحيح. العلماء يدرسونه ليفهموا كيف يعيد نمو أجزاء من جسمه.", "خطأ. عدده قليل لأن ماء البحيرات صار متسخًا، وليس نظيفًا.", "الجملة الأولى تقول إنها ساحة ملح كبيرة في بوليفيا (أمريكا الجنوبية).", "تبدو مثل الثلج، لكنها مصنوعة من الملح.", "بعد المطر تغطي الأرض طبقة رقيقة من الماء.", "السياح يأتون ليستمتعوا بالمنظر ويصوّروا الانعكاس.", "الليثيوم معدن يُستخدم في بطاريات الهواتف.", "البرمائي (`amphibian`) يعيش في الماء وعلى اليابسة، مثل الضفدع.", "`survive` معناها يبقى حيًا. الحيوانات تحتاج ماءً نظيفًا وطعامًا لتبقى حية.", "المرآة تعكس ما أمامها. `reflect` معناها يعكس.", "`regrow` معناها ينمو من جديد. الأكسولوتل يقدر ينمّي رجله المفقودة.", "`empty` معناها فارغ. تبدو الساحة فارغة لأن النباتات والحيوانات فيها قليلة جدًا. (كلمة `lithium` هي الكلمة الزائدة).", "الأكسولوتل حيوان، فنستخدم `which`.", "العالم شخص، فنستخدم `who`.", "البحيرة مكان، وبعدها فاعل جديد (`the axolotls`)، فنستخدم `where`.", "السؤال عن المكان، فنستخدم `Where` (أين؟).", "بعد الفراغ يأتي الفعل `looks`، فنستخدم `which` (أو `that`). نستخدم `where` فقط إذا جاء بعدها فاعل جديد."]};
+const bdi=t=>String(t).replace(/`([^`]+)`/g,'<bdi lang="en" dir="ltr">$1</bdi>');
+CH.forEach(ch=>{const a=AR[ch.n]||[];ch.all.forEach((q,i)=>{q.ar=a[i]?bdi(a[i]):'';});});
+
+</script>
+<script>
+(function(){
+'use strict';
+const app=document.getElementById('app'),chips=document.getElementById('chips');
+const reduced=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+let store={a:{},exam:{}};
+try{const s=localStorage.getItem('g5rev-v1');if(s){const o=JSON.parse(s);if(o&&o.a){store=o;if(!store.exam)store.exam={};}}}catch(e){}
+const save=()=>{try{localStorage.setItem('g5rev-v1',JSON.stringify(store));}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const strip=s=>String(s).replace(/<[^>]*>/g,'');
+const norm=s=>String(s).toLowerCase().replace(/[’‘'`´.,!?;:"]/g,'').replace(/\s+/g,' ').trim();
+const okSet=q=>Array.isArray(q.ans)?q.ans:[q.ans];
+const rec=q=>store.a[q.id]||(store.a[q.id]={});
+const examOn=n=>!!store.exam[n];
+const sameSet=(a,b)=>{a=a||[];return a.length===b.length&&b.every(x=>a.indexOf(x)>=0);};
+const reveal=r=>{r.rev=true;if(r.first===undefined)r.first=!!r.ok;};
+const clear=r=>{r.sel=null;r.rev=false;r.ok=false;r.bad=false;r.shown=false;r.hint=false;r.saved=false;r.ticks=[];};
+const els={};
+
+/* ---------- stats ---------- */
+function stats(ch){
+  let total=0,done=0,scored=0,first=0,pending=0,wrong=0;
+  for(const q of ch.all){
+    if(q.survey)continue;
+    total++;
+    const r=store.a[q.id];
+    if(r&&r.rev)done++;
+    else if(r&&(q.t==='choice'?(r.sel!=null&&!(Array.isArray(r.sel)&&!r.sel.length)):(examOn(ch.n)&&!!norm(r.sel||''))))pending++;
+    if(!q.free){scored++;if(r&&r.first)first++;}
+    if(r&&r.rev&&!r.ok&&!q.free)wrong++;
+  }
+  return{total,done,scored,first,pending,wrong};
+}
+
+/* ---------- listen (speechSynthesis, starts only after a tap) ---------- */
+const root=document.documentElement;
+const TTS=(()=>{try{return 'speechSynthesis' in window&&'SpeechSynthesisUtterance' in window&&!!window.speechSynthesis;}catch(e){return false;}})();
+if(!TTS)root.classList.add('no-tts');
+let voices=[],tok=0,cur=null;
+const normLang=l=>String(l||'').replace('_','-').toLowerCase();
+function loadVoices(){
+  if(!TTS)return;
+  try{voices=speechSynthesis.getVoices()||[];}catch(e){voices=[];}
+  const hasAr=voices.some(v=>normLang(v.lang).indexOf('ar')===0);
+  root.classList.toggle('no-ar',voices.length>0&&!hasAr);
+}
+if(TTS){
+  loadVoices();
+  try{speechSynthesis.addEventListener('voiceschanged',loadVoices);}catch(e){try{speechSynthesis.onvoiceschanged=loadVoices;}catch(e2){}}
+}
+function pickVoice(lang){
+  const pool=voices.filter(v=>normLang(v.lang).indexOf(lang)===0);
+  if(!pool.length)return null;
+  const pref=lang==='ar'?['ar-sa','ar-001','ar-ae','ar']:['en-gb','en-us','en-au','en'];
+  for(const p of pref){const v=pool.find(x=>normLang(x.lang)===p);if(v)return v;}
+  return pool[0];
+}
+function speakable(host){
+  const c=host.cloneNode(true);
+  c.querySelectorAll('.say,.no-say,svg,canvas,input,textarea,button.opt').forEach(n=>n.remove());
+  return c.textContent.replace(/___/g,' blank ').replace(/→/g,' to ').replace(/[·•]/g,', ')
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}️]/gu,'').replace(/\s+/g,' ').trim();
+}
+function segments(text){
+  const re=/[؀-ۿ]+(?:[\s،؟؛.,:!?()«»\-–]+[؀-ۿ]+)*|[^؀-ۿ]+/g,out=[];
+  let m;
+  while((m=re.exec(text))){
+    const s=m[0],ar=/[؀-ۿ]/.test(s),has=/[A-Za-z0-9؀-ۿ]/.test(s);
+    if(!has){if(out.length)out[out.length-1].text+=s;continue;}
+    out.push({lang:ar?'ar':'en',text:s});
+  }
+  return out;
+}
+function setSayBtn(b,on){
+  b.setAttribute('aria-pressed',on?'true':'false');b.classList.toggle('on',on);
+  const t=b.querySelector('.say-t');if(t)t.textContent=b.dataset.lang==='ar'?(on?'إيقاف':'استمع'):(on?'Stop':'Listen');
+}
+function stopSpeak(){
+  tok++;
+  if(TTS){try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();}catch(e){}}
+  if(cur){setSayBtn(cur,false);cur=null;}
+}
+function speakFrom(btn){
+  if(!TTS)return;
+  const host=btn.closest('[data-say]');if(!host)return;
+  if(cur===btn){stopSpeak();return;}
+  stopSpeak();
+  const noAr=root.classList.contains('no-ar');
+  const segs=segments(speakable(host)).filter(s=>s.lang==='en'||!noAr);
+  if(!segs.length)return;
+  const my=++tok;cur=btn;setSayBtn(btn,true);
+  segs.forEach((s,i)=>{
+    const u=new SpeechSynthesisUtterance(s.text),v=pickVoice(s.lang);
+    u.lang=v?v.lang:(s.lang==='ar'?'ar-SA':'en-GB');
+    if(v)u.voice=v;
+    u.rate=.9;
+    if(i===segs.length-1){const done=()=>{if(tok===my){setSayBtn(btn,false);cur=null;}};u.onend=done;u.onerror=done;}
+    try{speechSynthesis.speak(u);}catch(e){if(i===segs.length-1){setSayBtn(btn,false);cur=null;}}
+  });
+}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.say');if(b){e.preventDefault();speakFrom(b);}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeak();});
+
+/* ---------- navigation ---------- */
+chips.innerHTML=CH.map(c=>`<a class="chip ${c.subj==='English'?'eng':'sci'}" href="#ch-${c.n}" aria-label="Chapter ${c.n}: ${esc(c.title)}">${c.n}</a>`).join('');
+function markNav(n){
+  chips.querySelectorAll('.chip').forEach((a,i)=>{if(i+1===n){a.setAttribute('aria-current','page');try{a.scrollIntoView({inline:'center',block:'nearest'});}catch(e){}}else a.removeAttribute('aria-current');});
+}
+function route(){
+  stopSpeak();
+  const m=/^ch-(\d+)$/.exec(location.hash.replace('#',''));
+  const n=m&&CH[+m[1]-1]?+m[1]:0;
+  if(n)showChapter(n);else showHome();
+  markNav(n);
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- home ---------- */
+function showHome(){
+  let T=0,D=0,S=0,F=0;
+  const cards=CH.map(ch=>{
+    const s=stats(ch);T+=s.total;D+=s.done;S+=s.scored;F+=s.first;
+    const pct=s.total?Math.round(100*s.done/s.total):0,cls=ch.subj==='English'?'eng':'sci';
+    return `<a class="card ${cls}" href="#ch-${ch.n}"><div class="card-top"><span class="num">${ch.n}</span><span class="tag ${cls}">${ch.subj}</span></div><h2>${ch.title}</h2><p class="src">${esc(ch.file)}</p><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><p class="stat">${s.done} of ${s.total} answered${s.done?` · ${s.first} right first try`:''}</p></a>`;
+  }).join('');
+  const pct=T?Math.round(100*D/T):0;
+  app.innerHTML=`<div class="hero"><p class="eyebrow">Term 1 · English and Science</p><h1>Grade 5 Revision Book</h1><p class="lead">One chapter for each worksheet, in the same order as the PDFs. Read the short lesson, then answer. The correct answer and the explanation appear after you answer.</p><div class="overall"><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div><span class="stat">${D} of ${T} answered · ${F} of ${S} right first try</span></div></div><div class="grid">${cards}</div>`;
+}
+
+/* ---------- question rendering ---------- */
+function qEl(q,no){
+  const el=document.createElement('article');
+  el.id=q.id;el.dataset.no=no;
+  el.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&el.contains(b))act(el,q,b);});
+  el.addEventListener('input',e=>{if(e.target.matches('.txt'))rec(q).sel=e.target.value;});
+  el.addEventListener('change',e=>{if(e.target.matches('.txt'))save();});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input.txt')){const b=el.querySelector('.check');if(b)b.click();}});
+  els[q.id]={el,q};
+  paint(el,q);
+  return el;
+}
+function paint(el,q){
+  const r=store.a[q.id],rev=!!(r&&r.rev);
+  el.className='q'+(rev&&!q.survey&&!q.free?(r.ok?' is-good':' is-bad'):'');
+  const body=q.t==='choice'?bodyChoice(q,r):q.t==='type'?bodyType(q,r):bodyWrite(q,r);
+  el.innerHTML=`<div class="qhead"><span class="qno">${el.dataset.no}</span><div class="qtxt">${body.head}</div></div>${body.rest}`;
+  refresh(q.ch);
+}
+function ansText(q){
+  const idx=q.multi?q.ans:(q.best!=null?[q.best]:okSet(q));
+  return idx.map(i=>q.pics?'Picture '+String.fromCharCode(65+i):strip(q.opts[i])).join(' + ');
+}
+const sayBtn=lang=>`<button type="button" class="say" data-lang="${lang}" aria-pressed="false" aria-label="${lang==='ar'?'استمع':'Listen'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg><span class="say-t">${lang==='ar'?'استمع':'Listen'}</span></button>`;
+const FB=(c,h)=>`<div class="fb ${c}" data-say data-lang="en">${h}<div class="fb-tools">${sayBtn('en')}</div></div>`;
+const AX=q=>q.ar?`<div class="arx" dir="rtl" lang="ar" data-say data-lang="ar"><div class="arx-h"><span class="arx-t no-say">شرح بالعربي</span>${sayBtn('ar')}</div><p>${q.ar}</p></div>`:'';
+const RETRY='<div class="row"><button type="button" class="btn ghost retry">Try again</button></div>';
+const SAVED='<p class="stat" style="margin-top:10px">Saved. You will see if it is right when you finish the exam.</p>';
+function bodyChoice(q,r){
+  const rev=!!(r&&r.rev),sels=r&&r.sel!=null?[].concat(r.sel):[];
+  const lock=rev&&!q.survey;
+  let head=q.q;
+  if(head.indexOf('___')>=0){
+    const t=sels.length&&!q.multi&&!q.pics?strip(q.opts[sels[0]]):'&nbsp;';
+    head=head.replace('___',`<span class="blank${lock?(r.ok?' good':' bad'):''}">${t}</span>`);
+  }
+  const ok=okSet(q);
+  const opts=q.opts.map((o,i)=>{
+    let c='opt';const s=sels.indexOf(i)>=0;
+    if(s)c+=' sel';
+    if(lock){const isOk=ok.indexOf(i)>=0;if(isOk)c+=s?' good':' reveal';else if(s)c+=' bad';}
+    return `<button type="button" class="${c}" data-i="${i}"${lock?' disabled':''} aria-pressed="${s}">${o}</button>`;
+  }).join('');
+  let rest=`<div class="opts${q.pics?' pics':''}">${opts}</div>`;
+  if(q.multi&&!rev&&!examOn(q.ch))rest+=`<div class="row"><button type="button" class="btn check"${sels.length?'':' disabled'}>Check</button></div>`;
+  if(q.survey&&sels.length)rest+=`<p class="stat" style="margin-top:10px">Saved.</p>`;
+  if(lock){
+    if(r.ok){
+      const note=!q.multi&&q.best!=null&&r.sel!==q.best?`<small>Best choice: <b>${strip(q.opts[q.best])}</b>.</small>`:'';
+      rest+=FB('good',`<b>Correct!</b> ${q.why}${note}`)+AX(q);
+    }else{
+      rest+=FB('bad',`<b>Not quite.</b> The answer is <b>${ansText(q)}</b>. ${q.why}`)+AX(q)+RETRY;
+    }
+  }
+  return{head,rest};
+}
+function bodyType(q,r){
+  r=r||{};const rev=!!r.rev,ex=examOn(q.ch);
+  let rest=`<input type="text" class="txt" value="${esc(r.sel||'')}" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Type the correct sentence"${rev?' disabled':''} aria-label="Your answer">`;
+  if(!rev){
+    if(ex)rest+=`<div class="row"><button type="button" class="btn check">Save answer</button></div>`+(r.saved?SAVED:'');
+    else rest+=`<div class="row"><button type="button" class="btn check">Check</button><button type="button" class="btn ghost hint">Hint</button><button type="button" class="btn ghost show">Show answer</button></div>`;
+  }
+  if(!ex&&!rev&&r.hint)rest+=`<div class="fb hint">${q.hint}</div>`;
+  if(!ex&&!rev&&r.bad)rest+=`<div class="fb bad"><b>Not yet.</b> Read your sentence again and try once more.</div>`;
+  if(rev)rest+=r.ok?FB('good',`<b>Correct!</b> ${q.why}`)+AX(q):FB('bad',`<b>The correct sentence is:</b> ${esc(q.ans[0])} ${q.why}`)+AX(q)+RETRY;
+  return{head:q.q,rest};
+}
+function bodyWrite(q,r){
+  r=r||{};const rev=!!r.rev,ex=examOn(q.ch);
+  let rest=`<textarea class="txt" rows="3" placeholder="${esc(q.ph||'Write your answer here')}"${rev?' disabled':''} aria-label="Your answer">${esc(r.sel||'')}</textarea>`;
+  if(q.keys){
+    if(!rev){
+      if(ex)rest+=`<div class="row"><button type="button" class="btn check">Save answer</button></div>`+(r.saved?SAVED:'');
+      else rest+=`<div class="row"><button type="button" class="btn check">Check</button><button type="button" class="btn ghost show">Show answer</button></div>`;
+    }
+    if(!ex&&!rev&&r.bad)rest+=`<div class="fb bad"><b>Not yet.</b> ${esc(r.miss||'')} Try again.</div>`;
+    if(rev)rest+=r.ok?FB('good',`<b>Correct!</b><small>Model answer: ${q.model}</small>`)+AX(q):FB('bad',`<b>Model answer:</b> ${q.model}`)+AX(q)+RETRY;
+  }else if(q.free){
+    if(!rev&&!ex)rest+=`<div class="row"><button type="button" class="btn show">Show an example</button></div>`;
+    else if(rev)rest+=FB('hint',`<b>Example:</b> ${q.model}<small>Your answer can be different. A good answer follows the pattern.</small>`)+AX(q);
+  }else{
+    if(!r.shown&&!rev&&!ex)rest+=`<div class="row"><button type="button" class="btn show">Show model answer</button></div>`;
+    if(r.shown&&!rev){
+      const t=r.ticks||[];
+      rest+=FB('hint',`<b>Model answer:</b> ${q.model}`)+AX(q)+`<p style="margin:12px 0 0"><b>Did your answer include these ideas?</b> Tap each one you wrote.</p><div class="checks">${q.checks.map((c,i)=>`<button type="button" class="opt tick${t.indexOf(i)>=0?' sel':''}" data-i="${i}" aria-pressed="${t.indexOf(i)>=0}">${c}</button>`).join('')}</div><div class="row"><button type="button" class="btn done">Done</button></div>`;
+    }
+    if(rev)rest+=r.ok?FB('good',`<b>Great explanation!</b> You included every idea.`)+AX(q):FB('bad',`<b>Good try.</b> Read the model answer again and see which idea was missing.<small>${q.model}</small>`)+AX(q)+RETRY;
+  }
+  return{head:q.q,rest};
+}
+function missing(q,txt){
+  const t=norm(txt),miss=[];
+  q.keys.forEach(g=>{if(!g.some(w=>new RegExp('(^| )'+w+'( |$)').test(t)||t.indexOf(w)>=0))miss.push(g[0]);});
+  return miss;
+}
+function act(el,q,b){
+  const r=rec(q);
+  if(b.classList.contains('retry')){clear(r);save();paint(el,q);return;}
+  if(b.classList.contains('tick')){
+    const i=+b.dataset.i,t=(r.ticks||[]).slice(),k=t.indexOf(i);
+    k<0?t.push(i):t.splice(k,1);r.ticks=t;paint(el,q);save();return;
+  }
+  if(b.classList.contains('done')){r.ok=(r.ticks||[]).length===q.checks.length;reveal(r);save();paint(el,q);return;}
+  if(b.classList.contains('hint')){r.hint=true;paint(el,q);return;}
+  if(b.classList.contains('show')){
+    if(q.free){r.rev=true;r.ok=true;r.first=true;}
+    else if(q.keys){r.ok=false;if(r.first===undefined)r.first=false;r.rev=true;}
+    else if(q.t==='type'){r.ok=false;if(r.first===undefined)r.first=false;r.rev=true;}
+    else{r.shown=true;}
+    save();paint(el,q);return;
+  }
+  if(b.classList.contains('check')){
+    if(q.t==='choice'){r.ok=sameSet(r.sel,q.ans);reveal(r);}
+    else{
+      const inp=el.querySelector('.txt');r.sel=inp?inp.value:(r.sel||'');
+      if(examOn(q.ch)){r.saved=!!norm(r.sel);save();paint(el,q);return;}
+      if(q.t==='type'){
+        if(!norm(r.sel))return;
+        if(q.ans.map(norm).indexOf(norm(r.sel))>=0){r.ok=true;r.bad=false;reveal(r);}
+        else{r.ok=false;r.bad=true;if(r.first===undefined)r.first=false;}
+      }else{
+        const m=missing(q,r.sel);
+        if(!norm(r.sel)){r.bad=true;r.miss='Write your answer first.';}
+        else if(!m.length){r.ok=true;r.bad=false;reveal(r);}
+        else{r.ok=false;r.bad=true;r.miss='Try to include: '+m.join(', ')+'.';if(r.first===undefined)r.first=false;}
+      }
+    }
+    save();paint(el,q);return;
+  }
+  if(b.classList.contains('opt')){
+    const i=+b.dataset.i;
+    if(q.multi){
+      if(r.rev)return;
+      const s=Array.isArray(r.sel)?r.sel.slice():[],k=s.indexOf(i);
+      k<0?s.push(i):s.splice(k,1);r.sel=s;r.ok=sameSet(s,q.ans);
+      save();paint(el,q);return;
+    }
+    if(r.rev&&!q.survey)return;
+    r.sel=i;
+    if(q.survey){r.rev=true;r.ok=true;r.first=true;}
+    else{r.ok=okSet(q).indexOf(i)>=0;if(!examOn(q.ch))reveal(r);}
+    save();paint(el,q);
+  }
+}
+
+/* ---------- chapter ---------- */
+function showChapter(n){
+  const ch=CH[n-1],cls=ch.subj==='English'?'eng':'sci';
+  const lvl={1:'Below level',2:'On level',3:'Above level'};
+  const learn=`<details class="learn" open><summary>Learn first</summary><div class="learn-grid">${ch.learn.map(c=>`<div class="lcard${c.wide?' wide':''}" data-say data-lang="en"><div class="lh"><h3>${c.t}</h3>${sayBtn('en')}</div>${c.h}</div>`).join('')}</div><div class="arb" dir="rtl" lang="ar" data-say data-lang="ar"><div class="arb-h"><span class="arb-t no-say">شرح بالعربي</span>${sayBtn('ar')}</div><p>${ch.ar}</p></div></details>`;
+  const secs=ch.sections.map(s=>`<section class="sec"><div class="sec-h"><h2>${s.h}</h2>${s.level?`<span class="lvl l${s.level}">${lvl[s.level]}</span>`:''}</div>${s.note?`<p class="note">${s.note}</p>`:''}${s.pre||''}${s.qs.map(q=>`<div class="qslot" data-id="${q.id}"></div>`).join('')}</section>`).join('');
+  const on=examOn(n);
+  app.innerHTML=`<div class="ch-head"><div><span class="tag ${cls}">${ch.subj} · Chapter ${n}</span></div><h1>${ch.title}</h1><p class="src">${esc(ch.file)}</p></div>
+  <div class="toolbar"><div class="seg" role="group" aria-label="Mode"><button type="button" data-mode="0" aria-pressed="${!on}">Practice</button><button type="button" data-mode="1" aria-pressed="${on}">Exam</button></div><p class="mode-note" id="mnote"></p></div>
+  ${learn}${secs}<div class="res" id="res"></div>`;
+  app.querySelectorAll('[data-w="lab"]').forEach(mountLab);
+  ch.sections.forEach(s=>s.qs.forEach((q,qi)=>{
+    const slot=app.querySelector(`.qslot[data-id="${q.id}"]`);
+    slot.replaceWith(qEl(q,String.fromCharCode(97+qi)));
+  }));
+  const note=()=>{document.getElementById('mnote').textContent=examOn(n)?'Exam mode: you will not see if you are right until you press “Finish exam” at the bottom.':'Practice mode: you see the answer and the explanation right after you answer.';};
+  note();
+  app.querySelector('.seg').addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    store.exam[n]=b.dataset.mode==='1';save();
+    app.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    note();ch.all.forEach(q=>paint(els[q.id].el,q));refresh(n);
+  });
+  document.getElementById('res').addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    const a=b.dataset.act;
+    if(a==='finish'){
+      ch.all.forEach(q=>{
+        const r=store.a[q.id];if(!r||r.rev)return;
+        if(q.t==='choice'){if(r.sel!=null&&!(Array.isArray(r.sel)&&!r.sel.length)){r.ok=q.multi?sameSet(r.sel,q.ans):okSet(q).indexOf(r.sel)>=0;reveal(r);}}
+        else if(!norm(r.sel||''))return;
+        else if(q.t==='type'){r.ok=q.ans.map(norm).indexOf(norm(r.sel))>=0;reveal(r);}
+        else if(q.keys){r.ok=!missing(q,r.sel).length;reveal(r);}
+        else if(q.free){r.rev=true;r.ok=true;r.first=true;}
+        else{r.shown=true;}
+      });
+      save();ch.all.forEach(q=>paint(els[q.id].el,q));
+      document.getElementById('res').scrollIntoView({block:'start'});
+    }
+    if(a==='redo'){
+      let first=null;
+      ch.all.forEach(q=>{const r=store.a[q.id];if(r&&r.rev&&!r.ok&&!q.free){clear(r);paint(els[q.id].el,q);if(!first)first=els[q.id].el;}});
+      save();if(first)first.scrollIntoView({block:'center'});
+    }
+    if(a==='reset'){
+      if(b.dataset.armed){ch.all.forEach(q=>{delete store.a[q.id];paint(els[q.id].el,q);});save();window.scrollTo(0,0);}
+      else{b.dataset.armed='1';b.textContent='Tap again to reset';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent='Reset chapter';}},3000);}
+    }
+  });
+  refresh(n);
+}
+function refresh(n){
+  const res=document.getElementById('res');if(!res)return;
+  const ch=CH[n-1],s=stats(ch),pct=s.total?Math.round(100*s.done/s.total):0,on=examOn(n);
+  const next=n<CH.length?`<a class="btn" href="#ch-${n+1}">Next chapter</a>`:`<a class="btn" href="#home">All chapters</a>`;
+  res.innerHTML=`<h2>Your progress</h2><div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+  <p style="margin:12px 0 0"><span class="big">${s.first}</span> <span class="stat">of ${s.scored} right on the first try · ${s.done} of ${s.total} answered</span></p>
+  ${s.pending?`<p class="note">${s.pending} answer${s.pending>1?'s are':' is'} saved and waiting to be checked.</p>`:''}
+  ${s.wrong?`<p class="note">${s.wrong} to fix. Tap “Try again” on a red question, or use the button below.</p>`:''}
+  <div class="row">${on&&s.pending?'<button type="button" class="btn" data-act="finish">Finish exam</button>':''}${s.wrong?'<button type="button" class="btn ghost" data-act="redo">Redo the ones I missed</button>':''}${next}<button type="button" class="btn ghost" data-act="reset">Reset chapter</button></div>`;
+}
+
+/* ---------- particle lab ---------- */
+let labId=0;
+function mountLab(host){
+  const id='lab'+(++labId);
+  host.innerHTML=`<div class="lab"><canvas width="1200" height="600" role="img" aria-label="Particles in a container. Move the slider to add or remove energy."></canvas>
+  <div class="lab-row"><label for="${id}">Energy</label><span class="lab-end">Cold</span><input id="${id}" type="range" min="0" max="100" value="15"><span class="lab-end">Hot</span></div>
+  <div class="lab-btns"><button type="button" class="btn ghost" data-e="15">Solid</button><button type="button" class="btn ghost" data-e="50">Liquid</button><button type="button" class="btn ghost" data-e="88">Gas</button></div>
+  <p class="lab-info" aria-live="polite"></p></div>`;
+  const cv=host.querySelector('canvas'),ctx=cv.getContext('2d'),sl=host.querySelector('input'),info=host.querySelector('.lab-info');
+  ctx.scale(2,2);
+  const X0=130,X1=470,Y0=20,Y1=280,LQ=170,N=40,ps=[],R=rng(Math.floor(Math.random()*1e9));
+  for(let i=0;i<N;i++){const c=i%10,r=Math.floor(i/10),hx=165+c*30,hy=264-r*30;ps.push({x:hx,y:hy,hx,hy,vx:(R()-.5)*2,vy:(R()-.5)*2});}
+  const INFO=['<b>Solid:</b> particles are tightly packed and vibrate in place.','<b>Liquid:</b> particles are less tightly packed and slide past one another.','<b>Gas:</b> particles are far apart and move fast in all directions.'];
+  const CHG={'0>1':'Melting: energy was added.','1>2':'Evaporation: energy was added.','2>1':'Condensation: energy was removed.','1>0':'Freezing: energy was removed.','0>2':'Solid to gas: a lot of energy was added.','2>0':'Gas to solid: a lot of energy was removed.'};
+  let mode=-1;
+  function snap(){for(const p of ps){if(mode===0){p.x=p.hx;p.y=p.hy;}else{const top=mode===1?LQ:Y0;p.x=X0+9+R()*(X1-X0-18);p.y=top+9+R()*(Y1-top-18);}}}
+  function setMode(m){
+    if(m===mode)return;const prev=mode;mode=m;
+    info.innerHTML=INFO[m]+(prev>=0&&CHG[prev+'>'+m]?`<br><span class="lab-chg">${CHG[prev+'>'+m]}</span>`:'');
+    if(reduced)snap();
+  }
+  function draw(e){
+    const cs=getComputedStyle(document.documentElement),line=cs.getPropertyValue('--line2').trim()||'#888',cool=cs.getPropertyValue('--cool').trim()||'#2F6FE0';
+    ctx.clearRect(0,0,600,300);
+    if(mode===1){ctx.globalAlpha=.16;ctx.fillStyle=cool;ctx.fillRect(X0,LQ,X1-X0,Y1-LQ);ctx.globalAlpha=1;}
+    ctx.strokeStyle=line;ctx.lineWidth=4;ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(X0,Y0);ctx.lineTo(X0,Y1);ctx.lineTo(X1,Y1);ctx.lineTo(X1,Y0);ctx.stroke();
+    ctx.fillStyle=`hsl(${Math.round(215-e*1.9)},80%,52%)`;
+    for(const p of ps){ctx.beginPath();ctx.arc(p.x,p.y,9,0,6.2832);ctx.fill();}
+  }
+  function step(){
+    const e=+sl.value;setMode(e<34?0:e<67?1:2);
+    for(const p of ps){
+      if(mode===0){const a=.4+e/34*1.4;p.x+=(p.hx-p.x)*.2+(R()-.5)*a*2;p.y+=(p.hy-p.y)*.2+(R()-.5)*a*2;}
+      else{
+        const liq=mode===1,sp=liq?1+(e-34)/33*1.5:2.8+(e-67)/33*2.4;
+        p.vx+=(R()-.5)*(liq?.5:.25);p.vy+=(R()-.5)*(liq?.5:.25)+(liq?.06:0);
+        if(liq&&p.y<LQ)p.vy+=.3;
+        const v=Math.hypot(p.vx,p.vy)||.01,f=1+(sp/v-1)*.1;p.vx*=f;p.vy*=f;p.x+=p.vx;p.y+=p.vy;
+        if(p.x<X0+9){p.x=X0+9;p.vx=Math.abs(p.vx);}
+        if(p.x>X1-9){p.x=X1-9;p.vx=-Math.abs(p.vx);}
+        if(p.y>Y1-9){p.y=Y1-9;p.vy=-Math.abs(p.vy);}
+        if(!liq&&p.y<Y0+9){p.y=Y0+9;p.vy=Math.abs(p.vy);}
+      }
+    }
+    draw(e);
+  }
+  function loop(){if(!cv.isConnected)return;step();requestAnimationFrame(loop);}
+  function onInput(){const e=+sl.value;setMode(e<34?0:e<67?1:2);if(reduced)draw(e);}
+  sl.addEventListener('input',onInput);
+  host.querySelector('.lab-btns').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;sl.value=b.dataset.e;onInput();});
+  setMode(0);
+  if(reduced)draw(+sl.value);else requestAnimationFrame(loop);
+}
+
+route();
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+})();
+
+</script>
+</body>
+</html>
